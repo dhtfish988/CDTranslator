@@ -1,0 +1,34 @@
+【App Name】
+CD Translate
+
+【Subtitle】
+Smart Translation & OCR
+
+【App Description - English】
+CD Translate is a sleek and efficient macOS translation tool with real-time translation and image text recognition capabilities.
+
+Key Features:
+• Real-time Translation - Translate as you type, no waiting
+• Image OCR - Extract and translate text from images
+• Multi-language Support - 13 languages including Chinese, English, Japanese, Korean, French, German and more
+• Smart Detection - Auto-detect input language and switch translation direction
+• Clipboard Monitoring - Automatically recognize text when images are copied
+• Quick Actions - Cmd+V to paste images for instant OCR
+
+Highlights:
+• Clean interface, intuitive operation
+• Fast response, accurate translation
+• Local OCR processing for privacy
+• Native macOS app, smooth experience
+
+Whether for daily translation, language learning, or multilingual document processing, CD Translate is your reliable assistant.
+
+【Keywords】(within 100 characters, comma separated)
+translate,translation,OCR,text recognition,multilingual,Chinese English,Japanese,real-time,image OCR
+
+【What's New】
+Initial Release
+- Support for 13 languages
+- Real-time translation
+- Image text recognition
+- Clipboard monitoring
