@@ -1,120 +1,120 @@
-# ChatGPT 翻译器 macOS 应用
+# ChatGPT Translator macOS App
 
-一个使用 OpenAI API 的 macOS 原生翻译应用，提供简洁优雅的翻译界面。
+A native macOS translation app powered by the OpenAI API, with a clean, simple interface.
 
-## 功能特点
+## Features
 
-- ✨ 简洁现代的用户界面
-- 🌍 支持 13 种常用语言互译
-- 🔄 快速语言切换
-- 📋 一键复制翻译结果
-- ⚡️ 基于 OpenAI GPT-3.5 Turbo 的高质量翻译
-- 💾 自动保存 API Key 配置
+- ✨ Simple and modern user interface
+- 🌍 Supports translation between 13 commonly used languages
+- 🔄 Quick language switching
+- 📋 Copy translations with one click
+- ⚡️ High-quality translation based on OpenAI GPT-3.5 Turbo
+- 💾 Automatically save your API key settings
 
-## 支持的语言
+## Supported languages
 
-- 中文（简体）
-- 英语
-- 日语
-- 韩语
-- 法语
-- 德语
-- 西班牙语
-- 意大利语
-- 葡萄牙语
-- 俄语
-- 阿拉伯语
-- 泰语
-- 越南语
+- Chinese (Simplified)
+- English
+- Japanese
+- Korean
+- French
+- German
+- Spanish
+- Italian
+- Portuguese
+- Russian
+- Arabic
+- Thai
+- Vietnamese
 
-## 使用方法
+## How to use
 
-### 1. 获取 OpenAI API Key
+### 1. Get an OpenAI API key
 
-访问 [OpenAI Platform](https://platform.openai.com/) 注册账号并获取 API Key。
+Create an account on the [OpenAI Platform](https://platform.openai.com/) and generate an API key.
 
-### 2. 打开项目
+### 2. Open the project
 
-使用 Xcode 打开 `ChatGPTTranslator/ChatGPTTranslator.xcodeproj` 文件。
+Use Xcode to open the `ChatGPTTranslator/ChatGPTTranslator.xcodeproj` file.
 
-### 3. 构建运行
+### 3. Build and run
 
-在 Xcode 中选择目标设备为 "My Mac"，然后点击运行按钮（⌘R）。
+Select the target device as "My Mac" in Xcode and click the Run button (⌘R).
 
-### 4. 配置 API Key
+### 4. Configure API Key
 
-首次运行时，点击右上角的齿轮图标，输入你的 OpenAI API Key。
+When running for the first time, click the gear icon in the upper right corner and enter your OpenAI API Key.
 
-### 5. 开始翻译
+### 5. Start translation
 
-1. 选择源语言和目标语言
-2. 在左侧输入框输入要翻译的文本
-3. 点击"翻译"按钮
-4. 翻译结果将显示在右侧
-5. 点击"复制"按钮可复制翻译结果
+1. Select source and target languages
+2. Enter the text to be translated in the left input box
+3. Click the "Translate" button
+4. The translation results will be displayed on the right
+5. Click the "Copy" button to copy the translation results
 
-## 系统要求
+## System Requirements
 
-- macOS 13.0 或更高版本
-- Xcode 14.0 或更高版本（用于构建）
+- macOS 13.0 or higher
+- Xcode 14.0 or higher (for building)
 
-## 项目结构
+## Project structure
 
 ```
 ChatGPTTranslator/
 ├── ChatGPTTranslator/
-│   ├── ChatGPTTranslatorApp.swift    # 应用入口
-│   ├── ContentView.swift              # 主界面
+│   ├── ChatGPTTranslatorApp.swift    # Application entry point
+│   ├── ContentView.swift              # Main interface
 │   ├── Models/
-│   │   ├── TranslationService.swift  # 翻译服务（API 调用）
-│   │   └── Language.swift             # 语言模型
-│   ├── Assets.xcassets/               # 资源文件
-│   ├── Info.plist                     # 应用配置
-│   └── ChatGPTTranslator.entitlements # 权限配置
-└── ChatGPTTranslator.xcodeproj        # Xcode 项目文件
+│   │   ├── TranslationService.swift  # Translation service (API call)
+│   │   └── Language.swift             # Language model
+│   ├── Assets.xcassets/               # Resource file
+│   ├── Info.plist                     # Application configuration
+│   └── ChatGPTTranslator.entitlements # Permission configuration
+└── ChatGPTTranslator.xcodeproj        # Xcode project file
 ```
 
-## 主要功能说明
+## Main components
 
 ### TranslationService
 
-处理与 OpenAI API 的通信，负责：
-- 发送翻译请求
-- 处理 API 响应
-- 错误处理和状态管理
+Handles communication with the OpenAI API and is responsible for:
+- Send translation request
+- Handling API responses
+- Error handling and status management
 
 ### ContentView
 
-主界面包含：
-- 双栏翻译界面（源文本 | 翻译结果）
-- 语言选择下拉菜单
-- 翻译按钮和操作按钮
-- 状态栏显示错误或进度信息
+The main interface includes:
+- Two-column translation interface (source text | translation result)
+- Language selection drop-down menu
+- Translation button and operation button
+- Status bar displays error or progress information
 
 ### SettingsView
 
-配置界面，用于设置和保存 OpenAI API Key。
+Configuration interface, used to set and save OpenAI API Key.
 
-## 注意事项
+## Notes
 
-- 使用 OpenAI API 需要付费，请注意控制使用量
-- API Key 存储在本地 UserDefaults 中，请妥善保管
-- 需要网络连接才能使用翻译功能
-- 翻译质量取决于 OpenAI 的 GPT-3.5 模型
+- OpenAI API usage is billed separately; monitor your usage.
+- The API key is stored locally in UserDefaults. Keep it secure.
+- An internet connection is required to use the translation function
+- Translation quality depends on OpenAI’s GPT-3.5 model
 
-## 开发计划
+## Development Plan
 
-- [ ] 添加翻译历史记录
-- [ ] 支持多个翻译引擎切换
-- [ ] 添加快捷键支持
-- [ ] 支持批量翻译
-- [ ] 添加语音朗读功能
-- [ ] 支持拖拽文件翻译
+- [ ] Add translation history
+- [ ] Support switching between translation engines
+- [ ] Add shortcut key support
+- [ ] Support batch translation
+- [ ] Add text-to-speech support
+- [ ] Support translation of drag-and-drop files
 
-## 许可证
+## License
 
 MIT License
 
-## 贡献
+## Contributing
 
-欢迎提交 Issue 和 Pull Request！
+Issues and pull requests are welcome!

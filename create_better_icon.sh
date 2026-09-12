@@ -1,36 +1,38 @@
 #!/bin/bash
 
-# 创建更好看的 CD 翻译图标
-# 只保留大大的 CD 字母，去掉小字
+PROJECT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "正在创建新的 CD 翻译图标..."
+# Create better-looking CD translation icons
+# Only keep the big CD letters and remove the small letters
 
-# 创建临时目录
+echo "Creating new CD translation icon..."
+
+# Create temporary directory
 TEMP_DIR="/tmp/cd_icon_new"
 mkdir -p "$TEMP_DIR"
 
-# 创建 SVG 图标 - 大大的 CD 字母，现代渐变设计
+# Create SVG Icons - Big CD letters, modern gradient design
 cat > "$TEMP_DIR/icon.svg" << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="1024" height="1024" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- 背景渐变：蓝色到紫色 -->
+    <!-- Background gradient: blue to purple -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#7B68EE;stop-opacity:1" />
     </linearGradient>
 
-    <!-- 文字渐变：白色到浅蓝 -->
+    <!-- Text gradient: white to light blue -->
     <linearGradient id="textGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#E3F2FD;stop-opacity:0.95" />
     </linearGradient>
   </defs>
 
-  <!-- 圆角矩形背景 -->
+  <!-- Rounded rectangle background -->
   <rect width="1024" height="1024" rx="230" ry="230" fill="url(#bgGrad)"/>
 
-  <!-- CD 文字 - 大号，居中 -->
+  <!-- CD Text - Large, centered -->
   <text x="512" y="620"
         font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, Arial, sans-serif"
         font-size="420"
@@ -41,61 +43,61 @@ cat > "$TEMP_DIR/icon.svg" << 'EOF'
 </svg>
 EOF
 
-echo "✅ SVG 图标已创建"
+echo "✅ SVG icon created"
 
-# 将 SVG 转换为 PNG (1024x1024)
-echo "正在转换 SVG 到 PNG..."
+# Convert SVG to PNG (1024x1024)
+echo "Converting SVG to PNG..."
 qlmanage -t -s 1024 -o "$TEMP_DIR" "$TEMP_DIR/icon.svg" 2>/dev/null
 mv "$TEMP_DIR/icon.svg.png" "$TEMP_DIR/icon_1024.png" 2>/dev/null
 
-# 如果 qlmanage 失败，使用 sips 从 SVG 创建
+# Create from SVG using sips if qlmanage fails
 if [ ! -f "$TEMP_DIR/icon_1024.png" ]; then
-    echo "使用备用方法创建 PNG..."
-    # 创建一个简单的方式：直接用 ImageMagick 或其他工具
-    # 这里我们创建一个基础的 PNG
+    echo "Use alternate method to create PNG..."
+    # Create an easy way: directly with ImageMagick or other tools
+    # Here we create a basic PNG
     python3 << 'PYTHON'
 from PIL import Image, ImageDraw, ImageFont
 import os
 
-# 创建 1024x1024 图像
+# Create 1024x1024 image
 size = 1024
 img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
 draw = ImageDraw.Draw(img)
 
-# 绘制圆角矩形背景（渐变效果）
+# Draw a rounded rectangular background (gradient effect)
 for y in range(size):
     for x in range(size):
-        # 计算是否在圆角矩形内
-        rx, ry = 230, 230  # 圆角半径
+        # Calculate whether it is within a rounded rectangle
+        rx, ry = 230, 230  # Corner radius
         in_rect = False
 
-        # 四个角的圆角判断
-        if x < rx and y < ry:  # 左上角
+        # Judgment of rounded corners of four corners
+        if x < rx and y < ry:  # Upper left corner
             if (x - rx) ** 2 + (y - ry) ** 2 <= rx ** 2:
                 in_rect = True
-        elif x > size - rx and y < ry:  # 右上角
+        elif x > size - rx and y < ry:  # Upper right corner
             if (x - (size - rx)) ** 2 + (y - ry) ** 2 <= rx ** 2:
                 in_rect = True
-        elif x < rx and y > size - ry:  # 左下角
+        elif x < rx and y > size - ry:  # Lower left corner
             if (x - rx) ** 2 + (y - (size - ry)) ** 2 <= rx ** 2:
                 in_rect = True
-        elif x > size - rx and y > size - ry:  # 右下角
+        elif x > size - rx and y > size - ry:  # Lower right corner
             if (x - (size - rx)) ** 2 + (y - (size - ry)) ** 2 <= rx ** 2:
                 in_rect = True
         elif rx <= x <= size - rx or ry <= y <= size - ry:
             in_rect = True
 
         if in_rect:
-            # 计算渐变颜色（从蓝色到紫色）
+            # Calculate gradient color (from blue to purple)
             ratio = (x + y) / (2 * size)
             r = int(74 + (123 - 74) * ratio)
             g = int(144 + (104 - 144) * ratio)
             b = int(226 + (238 - 226) * ratio)
             img.putpixel((x, y), (r, g, b, 255))
 
-# 添加文字 "CD"
+# Add text "CD"
 try:
-    # 尝试使用系统字体
+    # Try using system fonts
     font = ImageFont.truetype("/System/Library/Fonts/SFNSDisplay.ttf", 380)
 except:
     try:
@@ -104,58 +106,58 @@ except:
         font = ImageFont.load_default()
 
 text = "CD"
-# 获取文字边界框
+# Get text bounding box
 bbox = draw.textbbox((0, 0), text, font=font)
 text_width = bbox[2] - bbox[0]
 text_height = bbox[3] - bbox[1]
 
-# 居中绘制文字
+# Draw text in the center
 x = (size - text_width) // 2 - bbox[0]
-y = (size - text_height) // 2 - bbox[1] - 40  # 稍微向上偏移
+y = (size - text_height) // 2 - bbox[1] - 40 # Offset slightly upward
 
-# 绘制白色文字
+# Draw white text
 draw.text((x, y), text, fill=(255, 255, 255, 255), font=font)
 
-# 保存
+# Save
 output_path = "/tmp/cd_icon_new/icon_1024.png"
 img.save(output_path, 'PNG')
-print(f"✅ 已创建 PNG 图标: {output_path}")
+print(f"✅ Created PNG icon: {output_path}")
 PYTHON
 fi
 
-# 创建 iconset 目录
+# Create iconset directory
 ICONSET="$TEMP_DIR/AppIcon.iconset"
 mkdir -p "$ICONSET"
 
-# 生成所有需要的尺寸
-echo "正在生成所有图标尺寸..."
+# Generate all required sizes
+echo "Generating all icon sizes..."
 
 sizes=(16 32 64 128 256 512)
 
 for size in "${sizes[@]}"; do
     sips -z $size $size "$TEMP_DIR/icon_1024.png" --out "$ICONSET/icon_${size}x${size}.png" > /dev/null 2>&1
 
-    # 生成 @2x 版本
+    # Generate @2x version
     size2x=$((size * 2))
     sips -z $size2x $size2x "$TEMP_DIR/icon_1024.png" --out "$ICONSET/icon_${size}x${size}@2x.png" > /dev/null 2>&1
 done
 
-# 创建 .icns 文件
-echo "正在创建 .icns 文件..."
+# Create .icns file
+echo "Creating .icns file..."
 iconutil -c icns "$ICONSET" -o "$TEMP_DIR/AppIcon.icns"
 
-# 复制到项目目录
-cp "$TEMP_DIR/AppIcon.icns" "/Users/ffff/Desktop/ChatGpt翻译/AppIcon.icns"
-cp "$TEMP_DIR/icon_1024.png" "/Users/ffff/Desktop/ChatGpt翻译/icon_preview.png"
+# Copy to project directory
+cp "$TEMP_DIR/AppIcon.icns" "${PROJECT_DIR}/AppIcon.icns"
+cp "$TEMP_DIR/icon_1024.png" "${PROJECT_DIR}/icon_preview.png"
 
 echo ""
-echo "✅ 新图标创建完成！"
+echo "✅ New icon created!"
 echo ""
-echo "文件位置："
-echo "  - ICNS 文件: /Users/ffff/Desktop/ChatGpt翻译/AppIcon.icns"
-echo "  - 预览图片: /Users/ffff/Desktop/ChatGpt翻译/icon_preview.png"
+echo "File location:"
+echo "  - ICNS file: ${PROJECT_DIR}/AppIcon.icns"
+echo "  - Preview image: ${PROJECT_DIR}/icon_preview.png"
 echo ""
-echo "现在运行以下命令重新编译应用："
-echo "  cd /Users/ffff/Desktop/ChatGpt翻译"
+echo "Now run the following command to recompile the application:"
+echo "  cd ${PROJECT_DIR}"
 echo "  ./build_cd.sh"
 echo ""

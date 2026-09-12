@@ -1,12 +1,14 @@
 #!/bin/bash
 
+PROJECT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 set -e
 
 echo "================================"
-echo "开始编译 ChatGPT 翻译器"
+echo "Start compiling ChatGPT translator"
 echo "================================"
 
-cd "/Users/ffff/Desktop/ChatGpt翻译"
+cd "${PROJECT_DIR}"
 
 APP_NAME="ChatGPTTranslator"
 BUILD_DIR="build"
@@ -15,17 +17,17 @@ CONTENTS_DIR="${APP_BUNDLE}/Contents"
 MACOS_DIR="${CONTENTS_DIR}/MacOS"
 RESOURCES_DIR="${CONTENTS_DIR}/Resources"
 
-# 清理旧的构建
-echo "清理旧的构建文件..."
+# Clean up old builds
+echo "Clean up old build files..."
 rm -rf "${BUILD_DIR}"
 
-# 创建 App Bundle 结构
-echo "创建 App Bundle 结构..."
+# Create App Bundle structure
+echo "Create App Bundle structure..."
 mkdir -p "${MACOS_DIR}"
 mkdir -p "${RESOURCES_DIR}"
 
-# 编译 Swift 代码
-echo "编译 Swift 代码..."
+# Compile Swift code
+echo "Compile Swift code..."
 swiftc \
     -target arm64-apple-macos13.0 \
     -sdk $(xcrun --show-sdk-path --sdk macosx) \
@@ -39,8 +41,8 @@ swiftc \
     ChatGPTTranslator/ChatGPTTranslator/Models/TranslationService.swift \
     ChatGPTTranslator/ChatGPTTranslator/Models/Language.swift
 
-# 创建 Info.plist
-echo "创建 Info.plist..."
+# Create Info.plist
+echo "Create Info.plist..."
 cat > "${CONTENTS_DIR}/Info.plist" << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -51,9 +53,9 @@ cat > "${CONTENTS_DIR}/Info.plist" << 'EOF'
 	<key>CFBundleIdentifier</key>
 	<string>com.chatgpt.translator</string>
 	<key>CFBundleName</key>
-	<string>ChatGPT翻译器</string>
+	<string>ChatGPTTranslator</string>
 	<key>CFBundleDisplayName</key>
-	<string>ChatGPT翻译器</string>
+	<string>ChatGPTTranslator</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -83,17 +85,17 @@ cat > "${CONTENTS_DIR}/Info.plist" << 'EOF'
 </plist>
 EOF
 
-# 复制资源文件
-echo "复制资源文件..."
+# Copy resource files
+echo "Copy resource files..."
 if [ -d "ChatGPTTranslator/ChatGPTTranslator/Assets.xcassets" ]; then
     cp -R ChatGPTTranslator/ChatGPTTranslator/Assets.xcassets "${RESOURCES_DIR}/"
 fi
 
-# 设置可执行权限
-echo "设置可执行权限..."
+# Set executable permissions
+echo "Set executable permissions..."
 chmod +x "${MACOS_DIR}/${APP_NAME}"
 
 echo "================================"
-echo "编译成功!"
-echo "应用位置: ${APP_BUNDLE}"
+echo "Compilation successful!"
+echo "Application location: ${APP_BUNDLE}"
 echo "================================"

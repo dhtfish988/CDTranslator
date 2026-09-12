@@ -1,28 +1,28 @@
-# ChatGPT 翻译网站 API 分析
+# ChatGPT translation website API analysis
 
-## 网站信息
+## Website information
 - URL: https://chatgpt.com/zh-Hans-CN/translate/
-- 功能: 提供文本翻译服务
+- Function: Provide text translation service
 
-## API 分析方法
+## API analysis method
 
-由于直接访问网站被限制(403错误),我们需要通过以下方式分析:
+Since direct access to the website is restricted (403 error), we need to analyze it in the following ways:
 
-### 方法 1: 使用浏览器开发者工具
-1. 在浏览器中打开 https://chatgpt.com/zh-Hans-CN/translate/
-2. 打开开发者工具 (F12 或 Cmd+Option+I)
-3. 切换到 Network 标签
-4. 输入文本进行翻译
-5. 查看网络请求,找到翻译相关的 API 调用
+### Method 1: Use browser developer tools
+1. Open https://chatgpt.com/zh-Hans-CN/translate/ in browser
+2. Open developer tools (F12 or Cmd+Option+I)
+3. Switch to Network tab
+4. Enter text to translate
+5. View network requests and find translation-related API calls
 
-### 方法 2: 查看页面源码
-通过分析页面的 JavaScript 代码来找到 API 端点
+### Method 2: View page source code
+Find API endpoints by analyzing the JavaScript code of the page
 
-## 预期的 API 结构
+## Expected API structure
 
-ChatGPT 翻译可能使用以下几种方式:
+ChatGPT translation may use the following methods:
 
-### 1. 标准 REST API
+### 1. Standard REST API
 ```
 POST https://chatgpt.com/backend-api/translate
 Headers:
@@ -31,36 +31,36 @@ Headers:
 
 Body:
 {
-  "text": "要翻译的文本",
+  "text": "Text to be translated",
   "source_lang": "en",
   "target_lang": "zh"
 }
 ```
 
-### 2. Server-Sent Events (SSE) 流式响应
+### 2. Server-Sent Events (SSE) streaming response
 ```
 POST https://chatgpt.com/backend-api/conversation
 ```
 
-### 3. WebSocket 连接
+### 3. WebSocket connection
 ```
 wss://chatgpt.com/ws
 ```
 
-## 需要关注的信息
+## Information that requires attention
 
-1. **API 端点**: 完整的请求 URL
-2. **请求方法**: GET/POST/PUT等
-3. **请求头**: Authorization, Content-Type 等
-4. **请求体格式**: JSON 结构
-5. **认证方式**: Token, Cookie, Session 等
-6. **响应格式**: JSON 或流式响应
+1. **API Endpoint**: Full request URL
+2. **Request method**: GET/POST/PUT, etc.
+3. **Request header**: Authorization, Content-Type, etc.
+4. **Request body format**: JSON structure
+5. **Authentication method**: Token, Cookie, Session, etc.
+6. **Response format**: JSON or streaming response
 
-## 下一步
+## Next step
 
-请在浏览器中手动操作并提供以下信息:
-1. 打开浏览器开发者工具
-2. 访问 https://chatgpt.com/zh-Hans-CN/translate/
-3. 进行一次翻译操作
-4. 在 Network 标签中找到翻译请求
-5. 复制请求的详细信息(URL、Headers、Payload)
+Please do it manually in your browser and provide the following information:
+1. Open browser developer tools
+2. Visit https://chatgpt.com/zh-Hans-CN/translate/
+3. Perform a translation operation
+4. Translation request found in Network tab
+5. Copy request details (URL, Headers, Payload)

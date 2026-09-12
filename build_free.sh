@@ -1,12 +1,14 @@
 #!/bin/bash
 
+PROJECT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 set -e
 
 echo "================================"
-echo "编译 ChatGPT 翻译器 (免费版)"
+echo "Compile ChatGPT translator (free version)"
 echo "================================"
 
-cd "/Users/ffff/Desktop/ChatGpt翻译"
+cd "${PROJECT_DIR}"
 
 APP_NAME="ChatGPTTranslator"
 BUILD_DIR="build"
@@ -15,14 +17,14 @@ CONTENTS_DIR="${APP_BUNDLE}/Contents"
 MACOS_DIR="${CONTENTS_DIR}/MacOS"
 RESOURCES_DIR="${CONTENTS_DIR}/Resources"
 
-echo "清理旧的构建文件..."
+echo "Clean up old build files..."
 rm -rf "${BUILD_DIR}"
 
-echo "创建 App Bundle 结构..."
+echo "Create App Bundle structure..."
 mkdir -p "${MACOS_DIR}"
 mkdir -p "${RESOURCES_DIR}"
 
-echo "编译 Swift 代码..."
+echo "Compile Swift code..."
 swiftc \
     -target arm64-apple-macos13.0 \
     -sdk $(xcrun --show-sdk-path --sdk macosx) \
@@ -37,11 +39,11 @@ swiftc \
     ChatGPTTranslator/ChatGPTTranslator/Models/Language.swift
 
 if [ $? -ne 0 ]; then
-    echo "❌ 编译失败!"
+    echo "❌ Compilation failed!"
     exit 1
 fi
 
-echo "创建 Info.plist..."
+echo "Create Info.plist..."
 cat > "${CONTENTS_DIR}/Info.plist" << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -52,9 +54,9 @@ cat > "${CONTENTS_DIR}/Info.plist" << 'EOF'
 	<key>CFBundleIdentifier</key>
 	<string>com.chatgpt.translator.free</string>
 	<key>CFBundleName</key>
-	<string>ChatGPT翻译器</string>
+	<string>ChatGPTTranslator</string>
 	<key>CFBundleDisplayName</key>
-	<string>ChatGPT翻译器</string>
+	<string>ChatGPTTranslator</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -84,30 +86,30 @@ cat > "${CONTENTS_DIR}/Info.plist" << 'EOF'
 </plist>
 EOF
 
-echo "复制资源文件..."
+echo "Copy resource files..."
 if [ -d "ChatGPTTranslator/ChatGPTTranslator/Assets.xcassets" ]; then
     cp -R ChatGPTTranslator/ChatGPTTranslator/Assets.xcassets "${RESOURCES_DIR}/"
 fi
 
-echo "设置可执行权限..."
+echo "Set executable permissions..."
 chmod +x "${MACOS_DIR}/${APP_NAME}"
 
 echo "================================"
-echo "✅ 编译成功!"
-echo "应用位置: ${APP_BUNDLE}"
+echo "✅ Compiled successfully!"
+echo "Application location: ${APP_BUNDLE}"
 echo "================================"
 
 echo ""
-echo "正在删除旧版本..."
+echo "Deleting old versions..."
 rm -rf /Applications/${APP_NAME}.app
 
-echo "正在安装到 Applications 文件夹..."
+echo "Installing to Applications folder..."
 cp -R "${APP_BUNDLE}" /Applications/
-echo "✅ 安装完成!"
+echo "✅ Installation completed!"
 echo ""
-echo "正在启动应用..."
+echo "Starting application..."
 open /Applications/${APP_NAME}.app
 echo "================================"
 echo ""
-echo "🎉 完成！这个版本完全免费,无需任何配置!"
-echo "直接输入文本即可翻译。"
+echo "🎉 Done! This version is completely free and requires no configuration!"
+echo "Simply enter text to translate."

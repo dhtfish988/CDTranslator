@@ -1,12 +1,14 @@
 #!/bin/bash
 
+PROJECT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 set -e
 
-echo "开始编译 ChatGPT 翻译器..."
+echo "Start compiling ChatGPT translator..."
 
-cd "/Users/ffff/Desktop/ChatGpt翻译/ChatGPTTranslator"
+cd "${PROJECT_DIR}/ChatGPTTranslator"
 
-# 使用 swiftc 直接编译
+# Compile directly using swiftc
 swiftc -parse-as-library \
     -target arm64-apple-macos13.0 \
     -import-objc-header ChatGPTTranslator/ChatGPTTranslator.entitlements \
@@ -19,4 +21,4 @@ swiftc -parse-as-library \
     ChatGPTTranslator/Models/Language.swift \
     -o ChatGPTTranslator.app
 
-echo "编译完成!"
+echo "Compilation completed!"

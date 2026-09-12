@@ -1,261 +1,261 @@
-# ChatGPT 翻译器 v4.0 - 实时翻译 + 图片识别版
+# ChatGPT Translator v4.0 - Real-time Translation + Image Recognition Version
 
-## 🎉 安装成功！
+## 🎉 Installation successful!
 
-应用已安装并启动: `/Applications/ChatGPTTranslator.app`
+Application installed and started: `/Applications/ChatGPTTranslator.app`
 
-## ✨ 全新功能
+## ✨ Brand new features
 
-### 1. 实时翻译 ⚡️
-- **输入即翻译** - 无需点击翻译按钮
-- **自动延迟** - 停止输入 0.8 秒后自动翻译
-- **流畅体验** - 像网易有道一样的实时翻译
+### 1. Real-time translation ⚡️
+- **Type and Translate** - No need to click the translate button
+- **Auto Delay** - Stop typing and automatically translate after 0.8 seconds
+- **Smooth experience** - real-time translation like NetEase Youdao
 
-### 2. 图片识别 📷
-- **OCR 文字识别** - 使用 Apple Vision 框架
-- **高精度识别** - 支持中文、英文、日文、韩文等
-- **即时翻译** - 识别后自动翻译
+### 2. Image recognition 📷
+- **OCR text recognition** - using Apple Vision framework
+- **High-precision recognition** - supports Chinese, English, Japanese, Korean, etc.
+- **Instant Translation** - Automatic translation after recognition
 
-### 3. 多种输入方式 📥
-- **直接输入** - 在左侧文本框输入文字
-- **复制粘贴** - 按 `Cmd+V` 粘贴图片
-- **选择文件** - 点击"选择图片"按钮上传
-- **多行支持** - 支持长文本和多行文本
+### 3. Multiple input methods 📥
+- **Direct input** - enter text in the text box on the left
+- **Copy and Paste** - Press `Cmd+V` to paste the image
+- **Select File** - Click the "Select Image" button to upload
+- **Multi-line support** - supports long text and multi-line text
 
-## 🚀 使用方法
+## 🚀 How to use
 
-### 文字翻译
-1. 在左侧输入框输入文字
-2. 停止输入后 0.8 秒自动翻译
-3. 翻译结果实时显示在右侧
-4. 点击"复制"按钮复制结果
+### text translation
+1. Enter text in the left input box
+2. Automatically translate 0.8 seconds after stopping typing
+3. Translation results are displayed on the right in real time
+4. Click the "Copy" button to copy the results
 
-### 图片翻译
+### Picture Translation
 
-#### 方法 1: 粘贴图片
-1. 在其他应用中复制图片(截图、网页图片等)
-2. 在左侧输入框按 `Cmd+V` 粘贴
-3. 自动识别图片中的文字
-4. 自动翻译识别的文字
+#### Method 1: Paste the picture
+1. Copy pictures (screenshots, web pictures, etc.) in other applications
+2. Press `Cmd+V` in the left input box to paste
+3. Automatically recognize text in pictures
+4. Automatically translate recognized text
 
-#### 方法 2: 选择图片文件
-1. 点击左侧的"选择图片"按钮
-2. 选择电脑中的图片文件
-3. 自动识别并翻译
+#### Method 2: Select image file
+1. Click the "Select Picture" button on the left
+2. Select image files on your computer
+3. Automatically recognize and translate
 
-#### 方法 3: 截图直接粘贴
-1. 按 `Cmd+Shift+4` 截图
-2. 在应用中按 `Cmd+V` 粘贴
-3. 自动识别并翻译
+#### Method 3: Paste the screenshot directly
+1. Press `Cmd+Shift+4` to take a screenshot
+2. Press `Cmd+V` to paste in the application
+3. Automatically recognize and translate
 
-## 📱 界面说明
+## 📱 Interface description
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ ChatGPT 翻译器   实时翻译|图片识别   [英语] ⇄ [中文]  ⚙️│
+│ ChatGPT Translator   real-time translation|Image recognition   [English] ⇄ [Chinese]  ⚙️│
 ├──────────────────────────┬──────────────────────────────┤
-│ 输入文本或图片  [选择图片] │ 翻译结果              [复制] │
+│ Enter text or pictures  [Select picture] │ Translation results              [Copy] │
 │                          │                              │
-│ [输入区域/图片预览]       │ [翻译结果显示区]              │
+│ [input area/Picture preview]       │ [Translation result display area]              │
 │                          │                              │
-│                          │ 💡 提示:                     │
-│                          │ • 输入文字自动翻译            │
-│                          │ • 复制图片并粘贴(Cmd+V)      │
-│                          │ • 点击"选择图片"上传          │
+│                          │ 💡 Tips:                     │
+│                          │ • Enter text and automatically translate it            │
+│                          │ • Copy image and paste(Cmd+V)      │
+│                          │ • click"Select picture"Upload          │
 └──────────────────────────┴──────────────────────────────┘
 ```
 
-## 🌐 支持的语言
+## 🌐 Supported languages
 
-- 中文 (简体)
-- 英语
-- 日语
-- 韩语
-- 法语
-- 德语
-- 西班牙语
-- 意大利语
-- 葡萄牙语
-- 俄语
-- 阿拉伯语
-- 泰语
-- 越南语
+- Chinese (Simplified)
+- English
+- Japanese
+- Korean
+- French
+- German
+- Spanish
+- Italian
+- Portuguese
+- Russian
+- Arabic
+- Thai
+- Vietnamese
 
-## ⚡️ 功能特点
+## ⚡️ Features
 
-### 实时翻译
-- ✅ 输入即翻译,无需点击按钮
-- ✅ 智能防抖,避免频繁请求
-- ✅ 支持多行长文本
-- ✅ 实时更新翻译结果
+### real-time translation
+- ✅ Translate as you type, no need to click a button
+- ✅ Intelligent debounce to avoid frequent requests
+- ✅ Supports multi-line long text
+- ✅ Update translation results in real time
 
-### 图片识别
-- ✅ 使用 Apple Vision 框架,离线识别
-- ✅ 支持多种语言文字识别
-- ✅ 高精度 OCR 识别
-- ✅ 自动翻译识别结果
+### Image recognition
+- ✅ Use Apple Vision framework, offline recognition
+- ✅ Supports text recognition in multiple languages
+- ✅ High-precision OCR recognition
+- ✅ Automatic translation recognition results
 
-### 用户体验
-- ✅ 原生 macOS 界面
-- ✅ 流畅快速的响应
-- ✅ 一键复制翻译结果
-- ✅ 支持快捷键操作
+### User experience
+- ✅ Native macOS interface
+- ✅ Smooth and fast response
+- ✅ Copy translation results with one click
+- ✅ Support shortcut key operation
 
-### 完全免费
-- ✅ 无需 API Key
-- ✅ 无需登录
-- ✅ 无限制使用
-- ✅ 图片识别完全离线
+### completely free
+- ✅ No API Key required
+- ✅ No login required
+- ✅ Unlimited use
+- ✅ Picture recognition completely offline
 
-## 🔧 技术细节
+## 🔧 Technical details
 
-### 翻译服务
-- **API**: Google Translate 非官方 API
-- **端点**: `https://translate.googleapis.com/translate_a/single`
-- **特点**: 免费、快速、质量高
+### Translation Services
+- **API**: Google Translate Unofficial API
+- **Endpoint**: `https://translate.googleapis.com/translate_a/single`
+- **Features**: Free, fast, high quality
 
-### 图片识别
-- **框架**: Apple Vision
-- **引擎**: VNRecognizeTextRequest
-- **特点**: 离线、快速、准确
-- **支持**: 中英日韩等多语言
+### Image recognition
+- **Framework**: Apple Vision
+- **Engine**: VNRecognizeTextRequest
+- **Features**: Offline, fast, accurate
+- **Support**: Chinese, English, Japanese, Korean and other languages
 
-### 实时翻译
-- **防抖延迟**: 0.8 秒
-- **取消机制**: 自动取消未完成的请求
-- **异步处理**: 不阻塞 UI
+### real-time translation
+- **Anti-Shake Delay**: 0.8 seconds
+- **Cancellation mechanism**: Automatically cancel outstanding requests
+- **Asynchronous processing**: Does not block the UI
 
-## 📝 使用技巧
+## 📝 Tips for use
 
-### 1. 快速截图翻译
+### 1. Quick screenshot translation
 ```
-1. 按 Cmd+Shift+4 截图
-2. 在翻译器中按 Cmd+V
-3. 自动识别并翻译
-```
-
-### 2. 网页图片翻译
-```
-1. 右键点击网页图片
-2. 选择"拷贝图像"
-3. 在翻译器中按 Cmd+V
+1. Press Cmd+Shift+4 Screenshot
+2. Press in the translator Cmd+V
+3. Automatically recognize and translate
 ```
 
-### 3. 长文本翻译
+### 2. Web page image translation
 ```
-1. 直接在左侧输入多行文本
-2. 停止输入后自动翻译
-3. 支持换行和段落
-```
-
-### 4. 快速切换语言
-```
-1. 点击语言之间的 ⇄ 图标
-2. 自动交换源语言和目标语言
-3. 如果有翻译结果,会自动反向翻译
+1. Right click on the web page image
+2. Select"Copy image"
+3. Press in the translator Cmd+V
 ```
 
-## ⚠️ 注意事项
+### 3. Long text translation
+```
+1. Enter multiple lines of text directly on the left
+2. Automatically translate after stopping typing
+3. supports line breaks and paragraphs
+```
 
-### 网络要求
-- 文字翻译需要网络连接
-- 图片识别完全离线,不需要网络
-- 建议网络稳定时使用
+### 4. Quickly switch languages
+```
+1. Click between languages ⇄ icon
+2. Automatically exchange source and target languages
+3. If there is a translation result,Will automatically reverse translate
+```
 
-### 使用限制
-- Google 可能限制过于频繁的请求
-- 建议合理使用,避免短时间大量翻译
-- 正常使用完全没问题
+## ⚠️ Precautions
 
-### 图片要求
-- 支持格式: PNG, JPEG, TIFF
-- 建议图片清晰,文字清楚
-- 太小或模糊的文字可能识别不准
+### Network requirements
+- Text translation requires an internet connection
+- Image recognition is completely offline, no network required
+- Recommended to use when the network is stable
 
-### 隐私安全
-- 文字翻译会发送到 Google 服务器
-- 图片识别在本地完成,不上传
-- 应用不存储任何内容
-- 不收集用户数据
+### Usage restrictions
+- Google may be throttling requests that are too frequent
+- It is recommended to use it rationally and avoid a large number of translations in a short time.
+- No problem for normal use
 
-## ❓ 常见问题
+### Picture request
+- Supported formats: PNG, JPEG, TIFF
+- It is recommended that the pictures be clear and the text clear
+- Text that is too small or blurry may not be recognized accurately
 
-**Q: 为什么输入后没有立即翻译？**
-A: 为了避免频繁请求,设置了 0.8 秒的延迟。停止输入后会自动翻译。
+### Privacy and Security
+- Text translations are sent to Google servers
+- Image recognition is completed locally and does not upload
+- App does not store any content
+- Does not collect user data
 
-**Q: 图片识别准确吗？**
-A: 使用 Apple Vision 框架,识别准确度很高。建议使用清晰的图片。
+## ❓ Frequently Asked Questions
 
-**Q: 支持手写文字吗？**
-A: 支持,但印刷体识别效果最好。
+**Q: Why is it not translated immediately after typing? **
+A: In order to avoid frequent requests, a delay of 0.8 seconds is set. It will be automatically translated after you stop typing.
 
-**Q: 可以离线使用吗？**
-A: 图片识别可以离线,但文字翻译需要网络。
+**Q: Is the picture recognition accurate? **
+A: Using the Apple Vision framework, the recognition accuracy is very high. It is recommended to use clear pictures.
 
-**Q: 为什么有时翻译会失败？**
-A: 可能是网络问题或 Google 暂时限制。稍后重试即可。
+**Q: Does it support handwritten text? **
+A: Supported, but the print recognition effect is the best.
 
-**Q: 能否一次翻译多张图片？**
-A: 当前版本每次只能处理一张图片。
+**Q: Can it be used offline? **
+A: Image recognition can be done offline, but text translation requires an internet connection.
 
-**Q: 翻译结果会保存吗？**
-A: 不会。应用不存储任何翻译内容,保护隐私。
+**Q: Why does translation sometimes fail? **
+A: It may be a network problem or a temporary restriction by Google. Just try again later.
 
-## 🆚 与其他版本对比
+**Q: Can I translate multiple pictures at one time? **
+A: The current version can only process one picture at a time.
 
-| 功能 | v1.0 | v2.0 | v3.0 | v4.0 ✨ |
+**Q: Will the translation results be saved? **
+A: No. The application does not store any translation content to protect privacy.
+
+## 🆚 Compare with other versions
+
+| Features | v1.0 | v2.0 | v3.0 | v4.0 ✨ |
 |------|------|------|------|---------|
-| 文字翻译 | ✅ | ✅ | ✅ | ✅ |
-| 需要配置 | ✅ API Key | ✅ Token | ❌ | ❌ |
-| 实时翻译 | ❌ | ❌ | ❌ | ✅ |
-| 图片识别 | ❌ | ❌ | ❌ | ✅ |
-| 复制粘贴图片 | ❌ | ❌ | ❌ | ✅ |
-| 多行支持 | ✅ | ✅ | ❌ | ✅ |
-| 完全免费 | ❌ | ❌ | ✅ | ✅ |
+| Text Translation | ✅ | ✅ | ✅ | ✅ |
+| Configuration required | ✅ API Key | ✅ Token | ❌ | ❌ |
+| Real-time translation | ❌ | ❌ | ❌ | ✅ |
+| Image Recognition | ❌ | ❌ | ❌ | ✅ |
+| Copy and paste pictures | ❌ | ❌ | ❌ | ✅ |
+| Multi-line support | ✅ | ✅ | ❌ | ✅ |
+| Totally Free | ❌ | ❌ | ✅ | ✅ |
 
-## 🎉 开始使用
+## 🎉 Get started
 
-应用已经启动,现在你可以:
+The application has been launched, now you can:
 
-1. **试试文字翻译**
-   - 输入 "Hello World"
-   - 自动翻译为中文
+1. **Try text translation**
+   - Enter "Hello World"
+   - Automatically translated into Chinese
 
-2. **试试图片翻译**
-   - 截个带文字的图
-   - 按 Cmd+V 粘贴
-   - 自动识别并翻译
+2. **Try image translation**
+   - Take a screenshot with text
+   - Press Cmd+V to paste
+   - Automatically recognize and translate
 
-3. **试试切换语言**
-   - 点击中间的 ⇄ 图标
-   - 快速切换翻译方向
+3. **Try switching language**
+   - Click the ⇄ icon in the middle
+   - Quickly switch translation direction
 
-## 🔄 更新历史
+## 🔄 Update history
 
-### v4.0 (当前版本) - 2026-01-16
-- ✨ 新增实时翻译功能
-- ✨ 新增图片识别功能
-- ✨ 支持复制粘贴图片
-- ✨ 支持多行长文本
-- 🎨 优化用户界面
-- ⚡️ 提升翻译速度
+### v4.0 (current version) - 2026-01-16
+- ✨ Added real-time translation function
+- ✨ Added image recognition function
+- ✨ Support copy and paste pictures
+- ✨ Support multi-line long text
+- 🎨 Optimize user interface
+- ⚡️ Improve translation speed
 
 ### v3.0
-- 使用免费翻译 API
-- 无需任何配置
+- Use the free translation API
+- No configuration required
 
 ### v2.0
-- 集成 ChatGPT API
-- 需要 Access Token
+- Integrate ChatGPT API
+- Access Token required
 
 ### v1.0
-- 基础翻译功能
-- 需要 OpenAI API Key
+- Basic translation function
+- Requires OpenAI API Key
 
 ---
 
-**版本**: 4.0 (实时翻译 + 图片识别版)
-**更新日期**: 2026-01-16
-**完全免费 | 实时翻译 | 图片识别**
+**Version**: 4.0 (real-time translation + image recognition version)
+**Updated date**: 2026-01-16
+**Completely Free | Real-time Translation | Image Recognition**
 
-🚀 享受全新的翻译体验！
+🚀 Enjoy a new translation experience!

@@ -7,21 +7,21 @@ class EnhancedTranslationService: ObservableObject {
     @Published var errorMessage: String?
 
     private var translationTask: Task<Void, Never>?
-    private let debounceDelay: TimeInterval = 0.8 // 延迟0.8秒后翻译
+    private let debounceDelay: TimeInterval = 0.8 // Translate after a delay of 0.8 seconds
 
-    // 实时翻译 - 带防抖
+    // Real-time translation - with debounce
     func translateRealtime(text: String, from sourceLanguage: String, to targetLanguage: String) async -> String? {
-        // 取消之前的翻译任务
+        // Cancel previous translation task
         translationTask?.cancel()
 
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return nil
         }
 
-        // 等待防抖延迟
+        // Waiting for debounce delay
         try? await Task.sleep(nanoseconds: UInt64(debounceDelay * 1_000_000_000))
 
-        // 检查是否被取消
+        // Check if canceled
         guard !Task.isCancelled else {
             return nil
         }
@@ -29,11 +29,11 @@ class EnhancedTranslationService: ObservableObject {
         return await translate(text: text, from: sourceLanguage, to: targetLanguage)
     }
 
-    // 从图片识别文字
+    // Recognizing text from images
     func recognizeText(from image: NSImage) async -> String? {
         guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
             await MainActor.run {
-                self.errorMessage = "无法处理图片"
+                self.errorMessage = "Unable to process image"
             }
             return nil
         }
@@ -47,7 +47,7 @@ class EnhancedTranslationService: ObservableObject {
             let request = VNRecognizeTextRequest { request, error in
                 if let error = error {
                     Task { @MainActor in
-                        self.errorMessage = "文字识别失败: \(error.localizedDescription)"
+                        self.errorMessage = "Text recognition failed: \(error.localizedDescription)"
                         self.isTranslating = false
                     }
                     continuation.resume(returning: nil)
@@ -56,7 +56,7 @@ class EnhancedTranslationService: ObservableObject {
 
                 guard let observations = request.results as? [VNRecognizedTextObservation] else {
                     Task { @MainActor in
-                        self.errorMessage = "未识别到文字"
+                        self.errorMessage = "No text recognized"
                         self.isTranslating = false
                     }
                     continuation.resume(returning: nil)
@@ -74,7 +74,7 @@ class EnhancedTranslationService: ObservableObject {
                 continuation.resume(returning: recognizedText)
             }
 
-            // 支持中英文识别
+            // supports Chinese and English recognition
             request.recognitionLanguages = ["zh-Hans", "zh-Hant", "en-US", "ja-JP", "ko-KR"]
             request.recognitionLevel = .accurate
             request.usesLanguageCorrection = true
@@ -86,7 +86,7 @@ class EnhancedTranslationService: ObservableObject {
                     try handler.perform([request])
                 } catch {
                     Task { @MainActor in
-                        self.errorMessage = "图片处理失败: \(error.localizedDescription)"
+                        self.errorMessage = "Image processing failed: \(error.localizedDescription)"
                         self.isTranslating = false
                     }
                     continuation.resume(returning: nil)
@@ -95,7 +95,7 @@ class EnhancedTranslationService: ObservableObject {
         }
     }
 
-    // 基础翻译功能
+    // Basic translation function
     private func translate(text: String, from sourceLanguage: String, to targetLanguage: String) async -> String? {
         await MainActor.run {
             self.isTranslating = true
@@ -119,7 +119,7 @@ class EnhancedTranslationService: ObservableObject {
         guard let url = components.url else {
             await MainActor.run {
                 self.isTranslating = false
-                self.errorMessage = "无效的 URL"
+                self.errorMessage = "Invalid URL"
             }
             return nil
         }
@@ -137,7 +137,7 @@ class EnhancedTranslationService: ObservableObject {
             }
 
             if httpResponse.statusCode != 200 {
-                throw TranslationError.apiError(statusCode: httpResponse.statusCode, message: "请求失败")
+                throw TranslationError.apiError(statusCode: httpResponse.statusCode, message: "Request failed")
             }
 
             guard let json = try JSONSerialization.jsonObject(with: data) as? [Any],
@@ -146,7 +146,7 @@ class EnhancedTranslationService: ObservableObject {
                 throw TranslationError.invalidResponse
             }
 
-            // 组合所有翻译片段
+            // Combine all translation fragments
             var translatedText = ""
             for item in firstArray {
                 if let translationArray = item as? [Any],
@@ -165,7 +165,7 @@ class EnhancedTranslationService: ObservableObject {
             await MainActor.run {
                 self.isTranslating = false
                 if !Task.isCancelled {
-                    self.errorMessage = "翻译失败: \(error.localizedDescription)"
+                    self.errorMessage = "Translation failed: \(error.localizedDescription)"
                 }
             }
             return nil
@@ -173,27 +173,27 @@ class EnhancedTranslationService: ObservableObject {
     }
 
     private func getLanguageCode(_ language: String) -> String {
-        // 如果已经是语言代码，直接返回
+        // If it is already a language code, return directly
         let knownCodes = ["zh-CN", "en", "ja", "ko", "fr", "de", "es", "it", "pt", "ru", "ar", "th", "vi", "auto"]
         if knownCodes.contains(language) {
             return language
         }
 
-        // 否则根据语言名称转换
+        // Otherwise convert according to language name
         switch language {
-        case "中文", "Chinese": return "zh-CN"
-        case "英语", "English": return "en"
-        case "日语", "Japanese": return "ja"
-        case "韩语", "Korean": return "ko"
-        case "法语", "French": return "fr"
-        case "德语", "German": return "de"
-        case "西班牙语", "Spanish": return "es"
-        case "意大利语", "Italian": return "it"
-        case "葡萄牙语", "Portuguese": return "pt"
-        case "俄语", "Russian": return "ru"
-        case "阿拉伯语", "Arabic": return "ar"
-        case "泰语", "Thai": return "th"
-        case "越南语", "Vietnamese": return "vi"
+        case "\u{4e2d}\u{6587}", "Chinese": return "zh-CN"
+        case "\u{82f1}\u{8bed}", "English": return "en"
+        case "\u{65e5}\u{8bed}", "Japanese": return "ja"
+        case "\u{97e9}\u{8bed}", "Korean": return "ko"
+        case "\u{6cd5}\u{8bed}", "French": return "fr"
+        case "\u{5fb7}\u{8bed}", "German": return "de"
+        case "\u{897f}\u{73ed}\u{7259}\u{8bed}", "Spanish": return "es"
+        case "\u{610f}\u{5927}\u{5229}\u{8bed}", "Italian": return "it"
+        case "\u{8461}\u{8404}\u{7259}\u{8bed}", "Portuguese": return "pt"
+        case "\u{4fc4}\u{8bed}", "Russian": return "ru"
+        case "\u{963f}\u{62c9}\u{4f2f}\u{8bed}", "Arabic": return "ar"
+        case "\u{6cf0}\u{8bed}", "Thai": return "th"
+        case "\u{8d8a}\u{5357}\u{8bed}", "Vietnamese": return "vi"
         default: return "auto"
         }
     }
@@ -206,9 +206,9 @@ enum TranslationError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidResponse:
-            return "无效的响应格式"
+            return "Invalid response format"
         case .apiError(let statusCode, let message):
-            return "API 错误 (\(statusCode)): \(message)"
+            return "API error (\(statusCode)): \(message)"
         }
     }
 }

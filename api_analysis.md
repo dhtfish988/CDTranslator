@@ -1,84 +1,84 @@
-# ChatGPT 翻译网站 API 分析
+# ChatGPT translation website API analysis
 
-## 现状
-由于 ChatGPT 网站有 Cloudflare 保护,我们无法直接通过 curl 访问。
+## Current situation
+Since the ChatGPT website is protected by Cloudflare, we cannot access it directly through curl.
 
-## 解决方案
+## Solution
 
-### 方案 1: 手动抓包 (推荐)
-你需要在浏览器中手动完成以下步骤:
+### Solution 1: Manual packet capture (recommended)
+You need to complete the following steps manually in the browser:
 
-1. **打开浏览器访问翻译页面**
+1. **Open the browser to access the translation page**
    ```
    https://chatgpt.com/zh-Hans-CN/translate/
    ```
 
-2. **打开开发者工具**
-   - Chrome/Edge: 按 F12 或 Cmd+Option+I
-   - 切换到 "Network" 标签
-   - 勾选 "Preserve log"
+2. **Open developer tools**
+   - Chrome/Edge: Press F12 or Cmd+Option+I
+   - Switch to "Network" tab
+   - Check "Preserve log"
 
-3. **执行翻译**
-   - 在页面输入: "hello"
-   - 等待翻译结果
+3. **Perform Translation**
+   - Enter: "hello" on the page
+   - Waiting for translation results
 
-4. **查找 API 请求**
-   在 Network 列表中找到翻译相关的请求,可能的名称:
+4. **Find API request**
+   Find translation-related requests in the Network list, possible names:
    - `translate`
    - `v1/...`
    - `api/...`
-   - 包含 POST 方法的请求
+   - Request containing POST method
 
-5. **复制请求信息**
-   - 点击该请求
-   - 查看 "Headers" 标签,记录:
-     - Request URL (请求地址)
-     - Request Method (请求方法)
-   - 查看 "Payload" 或 "Request" 标签,记录:
-     - 请求体的 JSON 格式
-   - 查看 "Response" 标签,记录:
-     - 响应的 JSON 格式
+5. **Copy request information**
+   - Click the request
+   - View the "Headers" tag, record:
+     - Request URL (request address)
+     - Request Method
+   - View the "Payload" or "Request" tag, record:
+     - JSON format of request body
+   - View the "Response" tag, record:
+     - JSON format of response
 
-6. **右键点击请求**
-   - 选择 "Copy" -> "Copy as cURL"
-   - 将内容发给我
+6. **Right click to request**
+   - Select "Copy" -> "Copy as cURL"
+   - Send me content
 
-### 方案 2: 查看页面源码
+### Solution 2: View page source code
 
-1. 访问 https://chatgpt.com/zh-Hans-CN/translate/
-2. 右键 -> 查看网页源代码
-3. 按 Cmd+F 搜索关键词:
+1. Visit https://chatgpt.com/zh-Hans-CN/translate/
+2. Right click -> View web page source code
+3. Press Cmd+F to search for keywords:
    - `fetch(`
    - `axios`
    - `XMLHttpRequest`
    - `/api/`
    - `endpoint`
-4. 找到发起翻译请求的 JavaScript 代码
+4. Find the JavaScript code that initiated the translation request
 
-### 方案 3: 使用替代翻译服务
+### Option 3: Use an alternative translation service
 
-如果抓取困难,我们可以使用其他免费的翻译 API:
+If crawling is difficult, we can use other free translation APIs:
 
-#### Google Translate (非官方)
-- 端点: `https://translate.googleapis.com/translate_a/single`
-- 免费,无需 API Key
-- 支持多种语言
+#### Google Translate (unofficial)
+- Endpoint: `https://translate.googleapis.com/translate_a/single`
+- Free, no API Key required
+- supports multiple languages
 
-#### LibreTranslate (开源)
-- 端点: `https://libretranslate.com/translate`
-- 完全免费
-- 开源项目
+#### LibreTranslate (open source)
+- Endpoint: `https://libretranslate.com/translate`
+- completely free
+- Open source project
 
 #### MyMemory Translation API
-- 端点: `https://api.mymemory.translated.net/get`
-- 免费,每天 1000 次
-- 无需注册
+- Endpoint: `https://api.mymemory.translated.net/get`
+- Free, 1000 times per day
+- No registration required
 
-## 下一步
+## Next step
 
-请选择一个方案:
-1. 如果你能手动抓包,请将 cURL 命令或请求信息发给我
-2. 如果无法抓包,我可以实现一个使用免费翻译 API 的版本
-3. 我们也可以先用 Google Translate 非官方 API 实现功能
+Please select a plan:
+1. If you can capture the packet manually, please send me the cURL command or request information
+2. If packet capture is not possible, I can implement a version using the free translation API
+3. We can also use Google Translate unofficial API to implement the function first
 
-请告诉我你的选择!
+Please tell me your choice!

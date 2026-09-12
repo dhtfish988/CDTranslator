@@ -25,17 +25,17 @@ struct ContentView: View {
             if let errorMessage = translationService.errorMessage {
                 statusBar(message: errorMessage, isError: true)
             } else if translationService.isTranslating || isProcessingImage {
-                statusBar(message: isProcessingImage ? "识别图片中..." : "翻译中...", isError: false)
+                statusBar(message: isProcessingImage ? "Recognizing text in image..." : "Translating...", isError: false)
             }
         }
     }
 
     private var topToolbar: some View {
         HStack {
-            Text("ChatGPT 翻译器")
+            Text("ChatGPT Translator")
                 .font(.headline)
 
-            Text("实时翻译 · 图片识别")
+            Text("Real-time translation · Image recognition")
                 .font(.caption)
                 .foregroundColor(.secondary)
                 .padding(.leading, 8)
@@ -43,7 +43,7 @@ struct ContentView: View {
             Spacer()
 
             HStack(spacing: 12) {
-                LanguagePicker(selectedLanguage: $sourceLanguage, label: "源语言")
+                LanguagePicker(selectedLanguage: $sourceLanguage, label: "Source language")
 
                 Button(action: swapLanguages) {
                     Image(systemName: "arrow.left.arrow.right")
@@ -52,7 +52,7 @@ struct ContentView: View {
                 .buttonStyle(.plain)
                 .foregroundColor(.blue)
 
-                LanguagePicker(selectedLanguage: $targetLanguage, label: "目标语言")
+                LanguagePicker(selectedLanguage: $targetLanguage, label: "Target language")
             }
         }
         .padding()
@@ -63,11 +63,11 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 if selectedImage != nil {
-                    Text("图片识别")
+                    Text("Image recognition")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 } else {
-                    Text("输入文本")
+                    Text("Enter text")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -75,7 +75,7 @@ struct ContentView: View {
                 Spacer()
 
                 if selectedImage != nil {
-                    Button("清除") {
+                    Button("Clear") {
                         selectedImage = nil
                         sourceText = ""
                         translatedText = ""
@@ -84,7 +84,7 @@ struct ContentView: View {
                     .foregroundColor(.orange)
                     .font(.caption)
                 } else if !sourceText.isEmpty {
-                    Button("清空") {
+                    Button("Clear") {
                         sourceText = ""
                         translatedText = ""
                     }
@@ -127,13 +127,13 @@ struct ContentView: View {
                     handlePastedImage(providers: providers)
                 }
 
-            // 占位符提示
+            // Placeholder prompt
             if sourceText.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("输入文字自动翻译...")
+                    Text("Type to translate automatically...")
                         .font(.system(size: 14))
                         .foregroundColor(.secondary.opacity(0.5))
-                    Text("按 Cmd+V 粘贴图片识别翻译")
+                    Text("Press Cmd+V to paste and translate an image")
                         .font(.system(size: 12))
                         .foregroundColor(.secondary.opacity(0.4))
                 }
@@ -156,7 +156,7 @@ struct ContentView: View {
 
                 if !sourceText.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("识别的文字:")
+                        Text("Recognized text:")
                             .font(.caption)
                             .foregroundColor(.secondary)
 
@@ -180,13 +180,13 @@ struct ContentView: View {
     private var translatedTextArea: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("翻译结果")
+                Text("Translation results")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                 Spacer()
 
                 if !translatedText.isEmpty {
-                    Button("复制") {
+                    Button("Copy") {
                         NSPasteboard.general.clearContents()
                         NSPasteboard.general.setString(translatedText, forType: .string)
                     }
@@ -210,7 +210,7 @@ struct ContentView: View {
                 .background(Color(NSColor.textBackgroundColor))
 
                 if translatedText.isEmpty {
-                    Text("翻译结果实时显示...")
+                    Text("Your translation appears here...")
                         .font(.system(size: 14))
                         .foregroundColor(.secondary.opacity(0.5))
                         .padding()

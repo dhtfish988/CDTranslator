@@ -1,13 +1,15 @@
 #!/bin/bash
 
+PROJECT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 set -e
 
 echo "================================"
-echo "编译 ChatGPT 翻译器 v4.0"
-echo "实时翻译 + 图片识别版"
+echo "Compile ChatGPT translator v4.0"
+echo "real-time translation + image recognition version"
 echo "================================"
 
-cd "/Users/ffff/Desktop/ChatGpt翻译"
+cd "${PROJECT_DIR}"
 
 APP_NAME="ChatGPTTranslator"
 BUILD_DIR="build"
@@ -16,14 +18,14 @@ CONTENTS_DIR="${APP_BUNDLE}/Contents"
 MACOS_DIR="${CONTENTS_DIR}/MacOS"
 RESOURCES_DIR="${CONTENTS_DIR}/Resources"
 
-echo "清理旧的构建文件..."
+echo "Clean up old build files..."
 rm -rf "${BUILD_DIR}"
 
-echo "创建 App Bundle 结构..."
+echo "Create App Bundle structure..."
 mkdir -p "${MACOS_DIR}"
 mkdir -p "${RESOURCES_DIR}"
 
-echo "编译 Swift 代码..."
+echo "Compile Swift code..."
 swiftc \
     -target arm64-apple-macos13.0 \
     -sdk $(xcrun --show-sdk-path --sdk macosx) \
@@ -39,11 +41,11 @@ swiftc \
     ChatGPTTranslator/ChatGPTTranslator/Models/Language.swift
 
 if [ $? -ne 0 ]; then
-    echo "❌ 编译失败!"
+    echo "❌ Compilation failed!"
     exit 1
 fi
 
-echo "创建 Info.plist..."
+echo "Create Info.plist..."
 cat > "${CONTENTS_DIR}/Info.plist" << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -54,9 +56,9 @@ cat > "${CONTENTS_DIR}/Info.plist" << 'EOF'
 	<key>CFBundleIdentifier</key>
 	<string>com.chatgpt.translator.enhanced</string>
 	<key>CFBundleName</key>
-	<string>ChatGPT翻译器</string>
+	<string>ChatGPTTranslator</string>
 	<key>CFBundleDisplayName</key>
-	<string>ChatGPT翻译器</string>
+	<string>ChatGPTTranslator</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -86,38 +88,38 @@ cat > "${CONTENTS_DIR}/Info.plist" << 'EOF'
 </plist>
 EOF
 
-echo "复制资源文件..."
+echo "Copy resource files..."
 if [ -d "ChatGPTTranslator/ChatGPTTranslator/Assets.xcassets" ]; then
     cp -R ChatGPTTranslator/ChatGPTTranslator/Assets.xcassets "${RESOURCES_DIR}/"
 fi
 
-echo "设置可执行权限..."
+echo "Set executable permissions..."
 chmod +x "${MACOS_DIR}/${APP_NAME}"
 
 echo "================================"
-echo "✅ 编译成功!"
-echo "应用位置: ${APP_BUNDLE}"
+echo "✅ Compiled successfully!"
+echo "Application location: ${APP_BUNDLE}"
 echo "================================"
 
 echo ""
-echo "正在删除旧版本..."
+echo "Deleting old versions..."
 rm -rf /Applications/${APP_NAME}.app
 
-echo "正在安装到 Applications 文件夹..."
+echo "Installing to Applications folder..."
 cp -R "${APP_BUNDLE}" /Applications/
-echo "✅ 安装完成!"
+echo "✅ Installation completed!"
 echo ""
-echo "正在启动应用..."
+echo "Starting application..."
 open /Applications/${APP_NAME}.app
 echo "================================"
 echo ""
-echo "🎉 ChatGPT 翻译器 v4.0 安装完成!"
+echo "🎉 ChatGPT Translator v4.0 installation completed!"
 echo ""
-echo "✨ 新功能:"
-echo "  • 实时翻译 - 输入即翻译,无需点击按钮"
-echo "  • 图片识别 - 支持从图片中识别文字并翻译"
-echo "  • 复制粘贴 - 按 Cmd+V 粘贴图片"
-echo "  • 拖拽上传 - 点击\"选择图片\"上传图片"
-echo "  • 多行支持 - 支持长文本翻译"
+echo "✨ New features:"
+echo "  • Real-time translation - Translate as you type, no need to click a button"
+echo "  • Image recognition - supports text recognition and translation from images"
+echo "  • Copy and Paste - Press Cmd+V to paste the image"
+echo "  • Drag and drop to upload - click \" to select the picture \" to upload the picture"
+echo "  • Multi-line support - supports long text translations"
 echo ""
-echo "🚀 开始使用吧！"
+echo "🚀 Let’s start using it!"

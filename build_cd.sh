@@ -1,30 +1,32 @@
 #!/bin/bash
 
+PROJECT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 set -e
 
 echo "================================"
-echo "编译 CD翻译 v1.0"
-echo "实时翻译 + 图片识别"
+echo "Compile CDTranslator v1.0"
+echo "real-time translation + image recognition"
 echo "================================"
 
-cd "/Users/ffff/Desktop/ChatGpt翻译"
+cd "${PROJECT_DIR}"
 
 APP_NAME="CDTranslator"
-DISPLAY_NAME="CD翻译"
+DISPLAY_NAME="CDTranslator"
 BUILD_DIR="build"
 APP_BUNDLE="${BUILD_DIR}/${APP_NAME}.app"
 CONTENTS_DIR="${APP_BUNDLE}/Contents"
 MACOS_DIR="${CONTENTS_DIR}/MacOS"
 RESOURCES_DIR="${CONTENTS_DIR}/Resources"
 
-echo "清理旧的构建文件..."
+echo "Clean up old build files..."
 rm -rf "${BUILD_DIR}"
 
-echo "创建 App Bundle 结构..."
+echo "Create App Bundle structure..."
 mkdir -p "${MACOS_DIR}"
 mkdir -p "${RESOURCES_DIR}"
 
-echo "编译 Swift 代码..."
+echo "Compile Swift code..."
 swiftc \
     -target arm64-apple-macos13.0 \
     -sdk $(xcrun --show-sdk-path --sdk macosx) \
@@ -40,11 +42,11 @@ swiftc \
     ChatGPTTranslator/ChatGPTTranslator/Models/Language.swift
 
 if [ $? -ne 0 ]; then
-    echo "❌ 编译失败!"
+    echo "❌ Compilation failed!"
     exit 1
 fi
 
-echo "创建 Info.plist..."
+echo "Create Info.plist..."
 cat > "${CONTENTS_DIR}/Info.plist" << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -89,49 +91,49 @@ cat > "${CONTENTS_DIR}/Info.plist" << EOF
 </plist>
 EOF
 
-echo "复制图标..."
+echo "Copy icon..."
 if [ -f "AppIcon.icns" ]; then
     cp AppIcon.icns "${RESOURCES_DIR}/"
-    echo "✅ 图标已添加"
+    echo "✅ Icon has been added"
 else
-    echo "⚠️  图标文件不存在，使用默认图标"
+    echo "⚠️ The icon file does not exist, use the default icon"
 fi
 
-echo "复制资源文件..."
+echo "Copy resource files..."
 if [ -d "ChatGPTTranslator/ChatGPTTranslator/Assets.xcassets" ]; then
     cp -R ChatGPTTranslator/ChatGPTTranslator/Assets.xcassets "${RESOURCES_DIR}/"
 fi
 
-echo "设置可执行权限..."
+echo "Set executable permissions..."
 chmod +x "${MACOS_DIR}/${APP_NAME}"
 
 echo "================================"
-echo "✅ 编译成功!"
-echo "应用位置: ${APP_BUNDLE}"
+echo "✅ Compiled successfully!"
+echo "Application location: ${APP_BUNDLE}"
 echo "================================"
 
 echo ""
-echo "正在删除旧版本..."
+echo "Deleting old versions..."
 rm -rf /Applications/ChatGPTTranslator.app
 rm -rf "/Applications/${DISPLAY_NAME}.app"
 
-echo "正在安装到 Applications 文件夹..."
+echo "Installing to Applications folder..."
 cp -R "${APP_BUNDLE}" /Applications/
-echo "✅ 安装完成!"
+echo "✅ Installation completed!"
 
 echo ""
-echo "正在启动应用..."
+echo "Starting application..."
 open "/Applications/${APP_NAME}.app"
 
 echo "================================"
 echo ""
-echo "🎉 CD翻译 v1.0 安装完成!"
+echo "🎉 CDTranslator v1.0 installation completed!"
 echo ""
-echo "✨ 功能特点:"
-echo "  • 实时翻译 - 输入即翻译"
-echo "  • 图片识别 - Cmd+V 粘贴图片"
-echo "  • 多种语言 - 支持13种语言"
-echo "  • 完全免费 - 无需配置"
+echo "✨ Features:"
+echo "  • Real-time translation – type and translate"
+echo "  • Image recognition - Cmd+V paste image"
+echo "  • Multilingual - supports 13 languages"
+echo "  • Completely free - no configuration required"
 echo ""
-echo "🚀 开始使用吧！"
+echo "🚀 Let’s start using it!"
 echo ""

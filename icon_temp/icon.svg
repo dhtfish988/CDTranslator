@@ -7,18 +7,18 @@
     </linearGradient>
   </defs>
 
-  <!-- 圆角矩形背景 -->
+  <!-- Rounded rectangle background -->
   <rect width="1024" height="1024" rx="180" fill="url(#bg)"/>
 
-  <!-- CD 文字阴影 -->
+  <!-- CD Text shadow -->
   <text x="512" y="580" font-family="Helvetica, Arial, sans-serif" font-size="420" font-weight="bold" text-anchor="middle" fill="rgba(0,0,0,0.2)">CD</text>
 
-  <!-- CD 文字 -->
+  <!-- CD Text -->
   <text x="512" y="576" font-family="Helvetica, Arial, sans-serif" font-size="420" font-weight="bold" text-anchor="middle" fill="white">CD</text>
 
-  <!-- 翻译文字阴影 -->
-  <text x="512" y="832" font-family="PingFang SC, Helvetica, sans-serif" font-size="100" text-anchor="middle" fill="rgba(0,0,0,0.15)">翻译</text>
+  <!-- Translate text shadow -->
+  <text x="512" y="832" font-family="PingFang SC, Helvetica, sans-serif" font-size="100" text-anchor="middle" fill="rgba(0,0,0,0.15)">EN</text>
 
-  <!-- 翻译文字 -->
-  <text x="512" y="828" font-family="PingFang SC, Helvetica, sans-serif" font-size="100" text-anchor="middle" fill="rgba(255,255,255,0.9)">翻译</text>
+  <!-- Translate text -->
+  <text x="512" y="828" font-family="PingFang SC, Helvetica, sans-serif" font-size="100" text-anchor="middle" fill="rgba(255,255,255,0.9)">EN</text>
 </svg>

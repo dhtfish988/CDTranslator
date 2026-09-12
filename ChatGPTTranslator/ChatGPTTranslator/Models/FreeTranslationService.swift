@@ -10,7 +10,7 @@ class FreeTranslationService: ObservableObject {
             self.errorMessage = nil
         }
 
-        // 使用 Google Translate 非官方 API
+        // Use Google Translate unofficial API
         let result = await translateWithGoogle(text: text, from: sourceLanguage, to: targetLanguage)
 
         await MainActor.run {
@@ -24,7 +24,7 @@ class FreeTranslationService: ObservableObject {
         let sourceLang = getLanguageCode(sourceLanguage)
         let targetLang = getLanguageCode(targetLanguage)
 
-        // Google Translate 非官方 API 端点
+        // Google Translate unofficial API endpoint
         let baseURL = "https://translate.googleapis.com/translate_a/single"
         var components = URLComponents(string: baseURL)!
 
@@ -38,7 +38,7 @@ class FreeTranslationService: ObservableObject {
 
         guard let url = components.url else {
             await MainActor.run {
-                self.errorMessage = "无效的 URL"
+                self.errorMessage = "Invalid URL"
             }
             return nil
         }
@@ -55,11 +55,11 @@ class FreeTranslationService: ObservableObject {
             }
 
             if httpResponse.statusCode != 200 {
-                throw TranslationError.apiError(statusCode: httpResponse.statusCode, message: "请求失败")
+                throw TranslationError.apiError(statusCode: httpResponse.statusCode, message: "Request failed")
             }
 
-            // 解析 Google Translate 响应
-            // 响应格式: [[["翻译结果","原文",null,null,3]],null,"en",null,null,null,null,[]]
+            // Parsing Google Translate responses
+            // Response format: [[["Translation result","Original text",null,null,3]],null,"en",null,null,null,null,[]]
             guard let json = try JSONSerialization.jsonObject(with: data) as? [Any],
                   let firstArray = json.first as? [Any],
                   let translationArray = firstArray.first as? [Any],
@@ -71,7 +71,7 @@ class FreeTranslationService: ObservableObject {
 
         } catch {
             await MainActor.run {
-                self.errorMessage = "翻译失败: \(error.localizedDescription)"
+                self.errorMessage = "Translation failed: \(error.localizedDescription)"
             }
             return nil
         }
@@ -79,19 +79,19 @@ class FreeTranslationService: ObservableObject {
 
     private func getLanguageCode(_ language: String) -> String {
         switch language {
-        case "中文", "Chinese": return "zh-CN"
-        case "英语", "English": return "en"
-        case "日语", "Japanese": return "ja"
-        case "韩语", "Korean": return "ko"
-        case "法语", "French": return "fr"
-        case "德语", "German": return "de"
-        case "西班牙语", "Spanish": return "es"
-        case "意大利语", "Italian": return "it"
-        case "葡萄牙语", "Portuguese": return "pt"
-        case "俄语", "Russian": return "ru"
-        case "阿拉伯语", "Arabic": return "ar"
-        case "泰语", "Thai": return "th"
-        case "越南语", "Vietnamese": return "vi"
+        case "\u{4e2d}\u{6587}", "Chinese": return "zh-CN"
+        case "\u{82f1}\u{8bed}", "English": return "en"
+        case "\u{65e5}\u{8bed}", "Japanese": return "ja"
+        case "\u{97e9}\u{8bed}", "Korean": return "ko"
+        case "\u{6cd5}\u{8bed}", "French": return "fr"
+        case "\u{5fb7}\u{8bed}", "German": return "de"
+        case "\u{897f}\u{73ed}\u{7259}\u{8bed}", "Spanish": return "es"
+        case "\u{610f}\u{5927}\u{5229}\u{8bed}", "Italian": return "it"
+        case "\u{8461}\u{8404}\u{7259}\u{8bed}", "Portuguese": return "pt"
+        case "\u{4fc4}\u{8bed}", "Russian": return "ru"
+        case "\u{963f}\u{62c9}\u{4f2f}\u{8bed}", "Arabic": return "ar"
+        case "\u{6cf0}\u{8bed}", "Thai": return "th"
+        case "\u{8d8a}\u{5357}\u{8bed}", "Vietnamese": return "vi"
         default: return "en"
         }
     }
@@ -104,9 +104,9 @@ enum TranslationError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidResponse:
-            return "无效的响应格式"
+            return "Invalid response format"
         case .apiError(let statusCode, let message):
-            return "API 错误 (\(statusCode)): \(message)"
+            return "API error (\(statusCode)): \(message)"
         }
     }
 }

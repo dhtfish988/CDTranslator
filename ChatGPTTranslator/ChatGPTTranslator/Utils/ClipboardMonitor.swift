@@ -23,14 +23,14 @@ class ClipboardMonitor: ObservableObject {
     private func checkClipboard() {
         let pasteboard = NSPasteboard.general
 
-        // 检查剪贴板是否有变化
+        // Check if the clipboard has changed
         guard pasteboard.changeCount != lastChangeCount else {
             return
         }
 
         lastChangeCount = pasteboard.changeCount
 
-        // 检查是否有图片
+        // Check if there is a picture
         if let image = getImageFromPasteboard() {
             DispatchQueue.main.async {
                 self.latestImage = image
@@ -41,7 +41,7 @@ class ClipboardMonitor: ObservableObject {
     private func getImageFromPasteboard() -> NSImage? {
         let pasteboard = NSPasteboard.general
 
-        // 尝试多种图片类型
+        // Try multiple image types
         if let imageData = pasteboard.data(forType: .tiff),
            let image = NSImage(data: imageData) {
             return image

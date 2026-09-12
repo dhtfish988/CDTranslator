@@ -14,7 +14,7 @@ class TranslationService: ObservableObject {
     func translate(text: String, from sourceLanguage: String, to targetLanguage: String) async -> String? {
         guard !apiKey.isEmpty else {
             await MainActor.run {
-                self.errorMessage = "请先设置 OpenAI API Key"
+                self.errorMessage = "Please set the OpenAI API Key first"
             }
             return nil
         }
@@ -24,12 +24,12 @@ class TranslationService: ObservableObject {
             self.errorMessage = nil
         }
 
-        let prompt = "请将以下\(sourceLanguage)文本翻译成\(targetLanguage)，只返回翻译结果，不要添加任何解释：\n\n\(text)"
+        let prompt = "Please translate the following \(sourceLanguage) text into \(targetLanguage). Return only the translation, without any explanation: \n\n\(text)"
 
         let requestBody: [String: Any] = [
             "model": "gpt-3.5-turbo",
             "messages": [
-                ["role": "system", "content": "你是一个专业的翻译助手。"],
+                ["role": "system", "content": "You are a professional translation assistant."],
                 ["role": "user", "content": prompt]
             ],
             "temperature": 0.3
@@ -38,7 +38,7 @@ class TranslationService: ObservableObject {
         guard let url = URL(string: apiURL) else {
             await MainActor.run {
                 self.isTranslating = false
-                self.errorMessage = "无效的 API URL"
+                self.errorMessage = "Invalid API URL"
             }
             return nil
         }
@@ -78,7 +78,7 @@ class TranslationService: ObservableObject {
         } catch {
             await MainActor.run {
                 self.isTranslating = false
-                self.errorMessage = "翻译失败: \(error.localizedDescription)"
+                self.errorMessage = "Translation failed: \(error.localizedDescription)"
             }
             return nil
         }
@@ -92,9 +92,9 @@ enum TranslationError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidResponse:
-            return "无效的响应格式"
+            return "Invalid response format"
         case .apiError(let statusCode, let message):
-            return "API 错误 (\(statusCode)): \(message)"
+            return "API error (\(statusCode)): \(message)"
         }
     }
 }

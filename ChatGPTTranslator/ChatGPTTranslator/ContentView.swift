@@ -26,7 +26,7 @@ struct ContentView: View {
             if let errorMessage = translationService.errorMessage {
                 statusBar(message: errorMessage, isError: true)
             } else if translationService.isTranslating || isProcessingImage {
-                statusBar(message: isProcessingImage ? "识别图片中..." : "翻译中...", isError: false)
+                statusBar(message: isProcessingImage ? "Recognizing text in image..." : "Translating...", isError: false)
             }
         }
         .onAppear {
@@ -44,10 +44,10 @@ struct ContentView: View {
 
     private var topToolbar: some View {
         HStack {
-            Text("CD翻译")
+            Text("CDTranslator")
                 .font(.headline)
 
-            Text("实时翻译 · 图片识别")
+            Text("Real-time translation · Image recognition")
                 .font(.caption)
                 .foregroundColor(.secondary)
                 .padding(.leading, 8)
@@ -55,7 +55,7 @@ struct ContentView: View {
             Spacer()
 
             HStack(spacing: 12) {
-                LanguagePicker(selectedLanguage: $sourceLanguage, label: "源语言")
+                LanguagePicker(selectedLanguage: $sourceLanguage, label: "Source language")
 
                 Button(action: swapLanguages) {
                     Image(systemName: "arrow.left.arrow.right")
@@ -64,7 +64,7 @@ struct ContentView: View {
                 .buttonStyle(.plain)
                 .foregroundColor(.blue)
 
-                LanguagePicker(selectedLanguage: $targetLanguage, label: "目标语言")
+                LanguagePicker(selectedLanguage: $targetLanguage, label: "Target language")
             }
         }
         .padding()
@@ -75,11 +75,11 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 if selectedImage != nil {
-                    Text("图片识别")
+                    Text("Image recognition")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 } else {
-                    Text("输入文本")
+                    Text("Enter text")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -95,7 +95,7 @@ struct ContentView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.system(size: 12))
-                            Text("清除")
+                            Text("Clear")
                                 .font(.system(size: 12))
                         }
                         .padding(.horizontal, 10)
@@ -113,7 +113,7 @@ struct ContentView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "trash.fill")
                                 .font(.system(size: 11))
-                            Text("清空")
+                            Text("Clear")
                                 .font(.system(size: 12))
                         }
                         .padding(.horizontal, 10)
@@ -145,7 +145,7 @@ struct ContentView: View {
                 .background(Color(NSColor.textBackgroundColor))
                 .onChange(of: sourceText) { newValue in
                     Task {
-                        // 自动检测语言并切换翻译方向
+                        // Automatically detect language and switch translation direction
                         autoDetectAndTranslate(text: newValue)
                     }
                 }
@@ -154,13 +154,13 @@ struct ContentView: View {
                 }
                 .padding(.horizontal, 8)
 
-            // 占位符提示
+            // Placeholder prompt
             if sourceText.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("输入文字自动翻译...")
+                    Text("Type to translate automatically...")
                         .font(.system(size: 14))
                         .foregroundColor(.secondary.opacity(0.5))
-                    Text("按 Cmd+V 粘贴图片识别翻译")
+                    Text("Press Cmd+V to paste and translate an image")
                         .font(.system(size: 12))
                         .foregroundColor(.secondary.opacity(0.4))
                 }
@@ -183,7 +183,7 @@ struct ContentView: View {
 
                 if !sourceText.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("识别的文字:")
+                        Text("Recognized text:")
                             .font(.caption)
                             .foregroundColor(.secondary)
 
@@ -207,7 +207,7 @@ struct ContentView: View {
     private var translatedTextArea: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("翻译结果")
+                Text("Translation results")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                 Spacer()
@@ -220,7 +220,7 @@ struct ContentView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "doc.on.doc.fill")
                                 .font(.system(size: 11))
-                            Text("复制")
+                            Text("Copy")
                                 .font(.system(size: 12))
                         }
                         .padding(.horizontal, 10)
@@ -247,7 +247,7 @@ struct ContentView: View {
                 .background(Color(NSColor.textBackgroundColor))
 
                 if translatedText.isEmpty {
-                    Text("翻译结果实时显示...")
+                    Text("Your translation appears here...")
                         .font(.system(size: 14))
                         .foregroundColor(.secondary.opacity(0.5))
                         .padding()
@@ -284,7 +284,7 @@ struct ContentView: View {
     }
 
     private func handlePastedImage(providers: [NSItemProvider]) {
-        // 尝试多种图片类型
+        // Try multiple image types
         let imageTypes = [UTType.image.identifier, UTType.png.identifier, UTType.jpeg.identifier, UTType.tiff.identifier]
 
         for provider in providers {
@@ -312,7 +312,7 @@ struct ContentView: View {
             }
         }
 
-        // 如果上面的方法都不行，尝试直接从剪贴板读取
+        // If none of the above methods work, try reading directly from the clipboard
         DispatchQueue.main.async {
             if let image = self.getImageFromPasteboard() {
                 self.processImage(image)
@@ -323,7 +323,7 @@ struct ContentView: View {
     private func getImageFromPasteboard() -> NSImage? {
         let pasteboard = NSPasteboard.general
 
-        // 尝试多种方式读取图片
+        // Try multiple ways to read pictures
         if let imageData = pasteboard.data(forType: .tiff),
            let image = NSImage(data: imageData) {
             return image
@@ -357,7 +357,7 @@ struct ContentView: View {
         }
     }
 
-    // 自动检测语言并翻译
+    // Automatically detect language and translate
     private func autoDetectAndTranslate(text: String) {
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             translatedText = ""
@@ -365,7 +365,7 @@ struct ContentView: View {
         }
 
         Task {
-            // 统计中英文字符数量，判断主要语言
+            // Count the number of Chinese and English characters and determine the main language
             var chineseCount = 0
             var englishCount = 0
 
@@ -378,12 +378,12 @@ struct ContentView: View {
                 }
             }
 
-            // 根据主要语言决定翻译方向
+            // Determine the translation direction based on the main language
             var fromLang = "auto"
             var toLang = "zh-CN"
 
             if chineseCount > englishCount {
-                // 中文为主 -> 全部翻译成英文
+                // Mainly Chinese -> All translated into English
                 fromLang = "zh-CN"
                 toLang = "en"
 
@@ -396,7 +396,7 @@ struct ContentView: View {
                     }
                 }
             } else if englishCount > 0 {
-                // 英文为主 -> 全部翻译成中文
+                // Mainly in English -> All translated into Chinese
                 fromLang = "en"
                 toLang = "zh-CN"
 
@@ -409,12 +409,12 @@ struct ContentView: View {
                     }
                 }
             } else {
-                // 没有明显的中英文，使用 NLLanguageRecognizer 检测
+                // There is no obvious Chinese and English, use NLlanguageRecognizer to detect
                 translateSingleLanguage(text)
                 return
             }
 
-            // 执行翻译
+            // Perform translation
             if let result = await translationService.translateRealtime(
                 text: text,
                 from: fromLang,
@@ -427,29 +427,29 @@ struct ContentView: View {
         }
     }
 
-    // 检测单个字符的语言类型
+    // Detect the language type of a single character
     private func detectCharacterLanguage(_ char: Character) -> LanguageType {
         let scalars = char.unicodeScalars
         guard let scalar = scalars.first else { return .other }
 
-        // 中文字符范围
-        if (0x4E00...0x9FFF).contains(scalar.value) ||  // CJK统一汉字
-           (0x3400...0x4DBF).contains(scalar.value) ||  // CJK扩展A
-           (0x20000...0x2A6DF).contains(scalar.value) { // CJK扩展B
+        // Chinese character range
+        if (0x4E00...0x9FFF).contains(scalar.value) ||  // CJK unified Chinese characters
+           (0x3400...0x4DBF).contains(scalar.value) ||  // CJK extension A
+           (0x20000...0x2A6DF).contains(scalar.value) { // CJK extension B
             return .chinese
         }
 
-        // 英文字符
+        // English characters
         if (0x0041...0x005A).contains(scalar.value) ||  // A-Z
            (0x0061...0x007A).contains(scalar.value) {   // a-z
             return .english
         }
 
-        // 数字和标点符号
+        // Numbers and punctuation
         return .other
     }
 
-    // 单一语言翻译（原有逻辑）
+    // Single language translation (original logic)
     private func translateSingleLanguage(_ text: String) {
         let recognizer = NLLanguageRecognizer()
         recognizer.processString(text)
@@ -461,7 +461,7 @@ struct ContentView: View {
 
             if let detected = detectedLanguage {
                 if detected == .simplifiedChinese || detected == .traditionalChinese {
-                    // 中文 -> 英文
+                    // Chinese -> English
                     fromLang = "zh-CN"
                     toLang = "en"
 
@@ -474,7 +474,7 @@ struct ContentView: View {
                         }
                     }
                 } else {
-                    // 其他语言 -> 中文
+                    // Other languages -> Chinese
                     toLang = "zh-CN"
 
                     let langCode = detected.rawValue

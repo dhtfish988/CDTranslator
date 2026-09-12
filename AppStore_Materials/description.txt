@@ -1,0 +1,34 @@
+[Application name]
+CDTranslator
+
+[Subtitle]
+Intelligent translation, image and text recognition
+
+[Application Description - English]
+CDTranslator is a simple and efficient macOS translation tool that supports real-time translation and image text recognition functions.
+
+Main functions:
+• Real-time translation - Translate as you type, no need to wait
+• Image and text recognition - supports text extraction and translation from images
+• Multi-language support - supports 13 languages including Chinese, English, Japanese, Korean, French, and German
+• Intelligent detection - automatically recognize the input language and intelligently switch the translation direction
+• Clipboard monitoring - automatically recognize text after copying pictures
+• Quick operation - supports Cmd+V to quickly paste pictures for recognition
+
+Feature Highlights:
+• Simple interface and intuitive operation
+• Fast response and accurate translation
+• Local text recognition to protect privacy
+• Native macOS application, smooth experience
+
+Whether it is daily translation, learning foreign languages or processing multi-language documents, CDTranslator is your right-hand assistant.
+
+[Keywords] (within 100 characters, separated by commas)
+translation, translate, OCR, text recognition, multi-language, Chinese-English translation, Japanese translation, real-time translation, picture translation, screenshot translation
+
+[Version update instructions]
+first release
+- Supports translation between 13 languages
+- Real-time translation function
+- Image text recognition
+- Clipboard monitoring

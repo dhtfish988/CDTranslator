@@ -1,143 +1,143 @@
-# ChatGPT 翻译器 v3.0 - 免费版
+# ChatGPT Translator v3.0 - Free Version
 
-## ✅ 已完成安装
+## ✅ Installation completed
 
-应用已成功安装到: `/Applications/ChatGPTTranslator.app`
+Application successfully installed to: `/Applications/ChatGPTTranslator.app`
 
-## 🎉 重大更新
+## 🎉 Major update
 
-### 完全免费,无需任何配置！
+### Completely free, no configuration required!
 
-- ❌ 不需要 OpenAI API Key
-- ❌ 不需要 ChatGPT Access Token
-- ❌ 不需要登录任何账号
-- ✅ 打开即用,完全免费！
+- ❌ No OpenAI API Key required
+- ❌ No ChatGPT Access Token required
+- ❌ No need to log in to any account
+- ✅ Ready to use, completely free!
 
-## 🚀 使用方法
+## 🚀 How to use
 
-1. **打开应用**
-   - 在 Applications 文件夹中找到"ChatGPT翻译器"
-   - 双击打开
+1. **Open application**
+   - Find "ChatGPT Translator" in the Applications folder
+   - Double-click to open
 
-2. **开始翻译**
-   - 选择源语言和目标语言(默认: 英语 → 中文)
-   - 在左侧输入要翻译的文本
-   - 点击"翻译"按钮
-   - 右侧显示翻译结果
+2. **Start translation**
+   - Select source and target languages (Default: English → Chinese)
+   - Enter the text to be translated on the left
+   - Click the "Translate" button
+   - Translation results are displayed on the right
 
-3. **其他功能**
-   - 点击语言之间的 ⇄ 图标可以快速切换语言
-   - 点击"复制"按钮可以复制翻译结果
-   - 点击"清空"按钮可以清空输入
+3. **Other functions**
+   - Click the ⇄ icon between languages to quickly switch languages
+   - Click the "Copy" button to copy the translation results
+   - Click the "Clear" button to clear the input
 
-## 📱 功能特点
+## 📱 Features
 
-- ✨ 完全免费,无限制使用
-- 🌍 支持 13 种常用语言互译
-- 🔄 一键切换源语言和目标语言
-- 📋 一键复制翻译结果
-- 🎨 原生 macOS 界面,流畅快速
-- 🔒 隐私安全,翻译内容不会被存储
+- ✨ Completely free, unlimited use
+- 🌍 Supports translation between 13 commonly used languages
+- 🔄 Switch source language and target language with one click
+- 📋 Copy translation results with one click
+- 🎨 Native macOS interface, smooth and fast
+- 🔒 Privacy and security, the translated content will not be stored
 
-## 🌐 支持的语言
+## 🌐 Supported languages
 
-- 中文 (简体)
-- 英语
-- 日语
-- 韩语
-- 法语
-- 德语
-- 西班牙语
-- 意大利语
-- 葡萄牙语
-- 俄语
-- 阿拉伯语
-- 泰语
-- 越南语
+- Chinese (Simplified)
+- English
+- Japanese
+- Korean
+- French
+- German
+- Spanish
+- Italian
+- Portuguese
+- Russian
+- Arabic
+- Thai
+- Vietnamese
 
-## 🔧 技术说明
+## 🔧 Technical description
 
-### 翻译服务
-使用 Google Translate 非官方 API:
-- 端点: `https://translate.googleapis.com/translate_a/single`
-- 完全免费
-- 无需 API Key
-- 翻译质量高
+### Translation Services
+Use Google Translate unofficial API:
+- Endpoint: `https://translate.googleapis.com/translate_a/single`
+- completely free
+- No API Key required
+- High translation quality
 
-### 系统要求
-- macOS 13.0 或更高版本
-- 需要网络连接
+### System Requirements
+- macOS 13.0 or higher
+- Internet connection required
 
-## 📝 注意事项
+## 📝 Precautions
 
-### 网络
-- 需要连接互联网才能使用
-- 翻译速度取决于网络状况
+### Network
+- Requires Internet connection to use
+- Translation speed depends on network conditions
 
-### 使用限制
-- Google 可能对过于频繁的请求进行限制
-- 建议合理使用,避免短时间内大量翻译
-- 如遇到限制,稍后再试即可
+### Usage restrictions
+- Google may limit requests that are too frequent
+- It is recommended to use it rationally to avoid a large number of translations in a short period of time
+- If you encounter restrictions, just try again later.
 
-### 隐私
-- 翻译内容会发送到 Google 服务器
-- 应用本身不会存储任何翻译内容
-- 不收集任何用户数据
+### Privacy
+- Translated content will be sent to Google servers
+- The app itself does not store any translation content
+- Does not collect any user data
 
-## ❓ 常见问题
+## ❓ Frequently Asked Questions
 
-**Q: 为什么不需要 API Key？**
-A: 我们使用 Google Translate 的非官方 API,这是一个公开的免费接口。
+**Q: Why is there no API Key required? **
+A: We use the unofficial API of Google Translate, which is a public and free interface.
 
-**Q: 有使用次数限制吗？**
-A: 理论上没有限制,但 Google 可能会限制过于频繁的请求。正常使用完全没问题。
+**Q: Is there a limit on the number of times it can be used? **
+A: There is no limit in theory, but Google may limit requests that are too frequent. No problem for normal use.
 
-**Q: 翻译质量如何？**
-A: 使用的是 Google Translate 引擎,翻译质量很高,与 Google 翻译网页版完全一致。
+**Q: How is the translation quality? **
+A: It uses the Google Translate engine, the translation quality is very high, and it is completely consistent with the Google Translate web version.
 
-**Q: 能否离线使用？**
-A: 不能,需要网络连接才能翻译。
+**Q: Can it be used offline? **
+A: No, an internet connection is required to translate.
 
-**Q: 为什么不直接用 ChatGPT 的接口？**
-A: ChatGPT 翻译网站有 Cloudflare 保护,难以直接调用。如果你能提供 ChatGPT 翻译的真实 API 信息,我可以集成。
+**Q: Why not use the ChatGPT interface directly? **
+A: The ChatGPT translation website is protected by Cloudflare and is difficult to call directly. If you can provide real API information for ChatGPT translation, I can integrate it.
 
-**Q: 翻译失败怎么办？**
-A: 检查网络连接,或稍后再试。如果持续失败,可能是 Google 暂时限制了访问。
+**Q: What should I do if the translation fails? **
+A: Check the network connection, or try again later. If it continues to fail, Google may have temporarily restricted access.
 
-## 🔄 版本历史
+## 🔄 Version History
 
-### v3.0 (当前版本)
-- 使用 Google Translate 免费 API
-- 无需任何配置,开箱即用
-- 完全免费,无限制使用
+### v3.0 (current version)
+- Use Google Translate free API
+- No configuration required, ready to use out of the box
+- completely free, unlimited use
 
 ### v2.0
-- 尝试使用 ChatGPT 官方 API
-- 需要 Access Token
+- Try using ChatGPT official API
+- Access Token required
 
 ### v1.0
-- 使用 OpenAI API
-- 需要 API Key
+- Using OpenAI API
+- API Key required
 
-## 💡 关于 ChatGPT 翻译接口
+## 💡 About ChatGPT translation interface
 
-如果你能够访问 https://chatgpt.com/zh-Hans-CN/translate/ 并抓取到真实的 API 接口信息,请按以下步骤操作:
+If you can access https://chatgpt.com/zh-Hans-CN/translate/ and capture the real API interface information, please follow the steps below:
 
-1. 在浏览器中按 F12 打开开发者工具
-2. 切换到 Network 标签
-3. 在网页中进行翻译操作
-4. 找到翻译相关的请求
-5. 右键 -> Copy -> Copy as cURL
-6. 将内容发给我,我会立即集成真正的 ChatGPT 翻译接口
+1. Press F12 in the browser to open the developer tools
+2. Switch to Network tab
+3. Perform translation operations on web pages
+4. Found translation related requests
+5. Right click -> Copy -> Copy as cURL
+6. Send me the content and I will immediately integrate the real ChatGPT translation interface
 
-## 🎉 开始使用
+## 🎉 Get started
 
-现在你可以立即开始使用翻译功能了！
+Now you can start using the translation function immediately!
 
-打开应用,输入文本,点击翻译即可。
+Open the app, enter text, and click Translate.
 
 ---
 
-**版本**: 3.0 (免费版)
-**更新日期**: 2026-01-16
-**无需配置,完全免费！**
+**Version**: 3.0 (Free version)
+**Updated date**: 2026-01-16
+**No configuration required, completely free! **

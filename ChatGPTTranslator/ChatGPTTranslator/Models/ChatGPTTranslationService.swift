@@ -14,7 +14,7 @@ class ChatGPTTranslationService: ObservableObject {
     func translate(text: String, from sourceLanguage: String, to targetLanguage: String) async -> String? {
         guard !accessToken.isEmpty else {
             await MainActor.run {
-                self.errorMessage = "请先设置 ChatGPT Access Token"
+                self.errorMessage = "Please set up ChatGPT Access Token first"
             }
             return nil
         }
@@ -24,10 +24,10 @@ class ChatGPTTranslationService: ObservableObject {
             self.errorMessage = nil
         }
 
-        // 构建翻译提示词
+        // Construct translation prompt words
         let prompt = "Translate the following text from \(sourceLanguage) to \(targetLanguage). Only provide the translation, without any explanations:\n\n\(text)"
 
-        // ChatGPT conversation API 请求体
+        // ChatGPT conversation API request body
         let conversationId = UUID().uuidString
         let messageId = UUID().uuidString
         let parentMessageId = UUID().uuidString
@@ -58,7 +58,7 @@ class ChatGPTTranslationService: ObservableObject {
         guard let url = URL(string: "\(baseURL)/backend-api/conversation") else {
             await MainActor.run {
                 self.isTranslating = false
-                self.errorMessage = "无效的 API URL"
+                self.errorMessage = "Invalid API URL"
             }
             return nil
         }
@@ -88,7 +88,7 @@ class ChatGPTTranslationService: ObservableObject {
                 throw TranslationError.apiError(statusCode: httpResponse.statusCode, message: errorText)
             }
 
-            // 解析流式响应
+            // Parsing streaming responses
             let responseText = String(data: data, encoding: .utf8) ?? ""
             let result = parseStreamResponse(responseText)
 
@@ -101,14 +101,14 @@ class ChatGPTTranslationService: ObservableObject {
         } catch {
             await MainActor.run {
                 self.isTranslating = false
-                self.errorMessage = "翻译失败: \(error.localizedDescription)"
+                self.errorMessage = "Translation failed: \(error.localizedDescription)"
             }
             return nil
         }
     }
 
     private func parseStreamResponse(_ response: String) -> String? {
-        // ChatGPT 使用 Server-Sent Events (SSE) 格式
+        // ChatGPT uses Server-Sent Events (SSE) format
         let lines = response.components(separatedBy: "\n")
         var translatedText = ""
 
@@ -116,7 +116,7 @@ class ChatGPTTranslationService: ObservableObject {
             if line.hasPrefix("data: ") {
                 let jsonString = line.replacingOccurrences(of: "data: ", with: "")
 
-                // 跳过特殊标记
+                // Skip special markers
                 if jsonString == "[DONE]" {
                     break
                 }
@@ -129,7 +129,7 @@ class ChatGPTTranslationService: ObservableObject {
                     continue
                 }
 
-                // 累积翻译文本
+                // Accumulated translated text
                 if let part = parts.first {
                     translatedText = part
                 }
@@ -148,11 +148,11 @@ enum TranslationError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidResponse:
-            return "无效的响应格式"
+            return "Invalid response format"
         case .authenticationFailed:
-            return "认证失败,请检查 Access Token"
+            return "Authentication failed, please check Access Token"
         case .apiError(let statusCode, let message):
-            return "API 错误 (\(statusCode)): \(message)"
+            return "API error (\(statusCode)): \(message)"
         }
     }
 }
