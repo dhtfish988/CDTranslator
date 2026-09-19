@@ -59,31 +59,35 @@ swiftc -target arm64-apple-macos13.0 \
 ```
 
 **Build check.** The four files above compile to an arm64 Mach-O with the macOS 27.0
-SDK (Xcode 26), targeting macOS 13.0. Two warnings remain, both from `Vision` not
-being `Sendable` — `VNImageRequestHandler` captured in a `@Sendable` closure in
-`EnhancedTranslationService.swift`. The build produces a working binary; it has not
-been notarised, and it is signed ad-hoc by the linker, so Gatekeeper will treat it
-as unidentified on another machine.
+SDK (Xcode 26), targeting macOS 13.0. Four warnings remain, all in
+`EnhancedTranslationService.swift` and all from Swift concurrency checking against
+`Vision`, which predates `Sendable`: `VNImageRequestHandler`, `VNRecognizeTextRequest`
+and `self` are each captured in a `@Sendable` closure, and the compiler suggests
+`@preconcurrency import Vision` to silence the set. The build produces a working
+binary; it has not been notarised, and it is signed ad-hoc by the linker, so
+Gatekeeper will treat it as unidentified on another machine.
 
 ## What is in this repository
 
-The four files listed above are the app. Everything else is history, and it is worth
-knowing which is which before reading the source:
+The four files listed above are the app. The rest is earlier work kept because it
+still builds, and it is worth knowing which is which before reading the source:
 
 | | |
 |---|---|
 | **Built** | `ChatGPTTranslatorApp.swift`, `ContentView.swift`, `Models/EnhancedTranslationService.swift`, `Models/Language.swift` |
 | Earlier UI drafts | `ContentViewSimple.swift`, `ContentViewFree.swift`, `ContentViewEnhanced.swift`, `ContentView.swift.v3`, `ContentView.swift.v4` |
 | Earlier backends | `Models/TranslationService.swift`, `Models/ChatGPTTranslationService.swift` (OpenAI, needed a key), `Models/FreeTranslationService.swift` |
-| Other build scripts | `build_chatgpt.sh`, `build_free.sh`, `build_simple.sh`, `build_final.sh` — each swaps in one of the backends above |
-| Earlier READMEs | `README_v3.md`, `README_v4.md` |
-| Icon generation | the `create_*_icon.sh` scripts and `icon_temp/` |
-| App Store drafts | `AppStore_Materials/`, and the publishing guides |
+| Other build scripts | `build_chatgpt.sh`, `build_free.sh`, `build_simple.sh`, `build_final.sh`, `build_app.sh` — each swaps in one of the backends above |
+| Docs | `CDTranslator_User_Guide.md`, and `docs/index.html`, which is the privacy policy published at <https://dhtfish988.github.io/CDTranslator/> |
+| App Store copy | `AppStore_Materials/` |
 
-The app started out calling OpenAI and needing an API key, which is what
-`README_v3.md` and the older docs describe. It does not work that way any more.
-`Utils/ClipboardMonitor.swift` is also present but not compiled into the current
+The app started out calling OpenAI and needing an API key; it does not work that way
+any more. `Utils/ClipboardMonitor.swift` is present but not compiled into the current
 build.
+
+Icon-generation scripts, intermediate icon artwork, App Store submission notes, two
+superseded READMEs and some dead API-analysis notes were removed in a later commit.
+They are still in the git history if you need them.
 
 ## Limitations
 
