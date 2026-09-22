@@ -61,16 +61,27 @@ swiftc -target arm64-apple-macos13.0 \
   ChatGPTTranslator/ChatGPTTranslator/Models/Language.swift
 ```
 
-**Build check (2026-09-22, source commit `2b22434`).** The four files above compiled
+**Build check (2026-09-22, translation cancellation fixes).** The four files above compiled
 to an arm64 Mach-O on macOS 26.7 with Xcode 27.0 and the macOS 27.0 SDK, targeting
-macOS 13.0. Four warnings remain, all in
+macOS 13.0. Three warnings remain, all in
 `EnhancedTranslationService.swift` and all from Swift concurrency checking against
-`Vision`, which predates `Sendable`: `VNImageRequestHandler`, `VNRecognizeTextRequest`
-and `self` are each captured in a `@Sendable` closure, and the compiler suggests
+`Vision`, which predates `Sendable`: `VNImageRequestHandler` and `VNRecognizeTextRequest`
+are captured in a `@Sendable` closure, and the compiler suggests
 `@preconcurrency import Vision` to silence the set. This was a compile-only check;
 the binary was not installed or run. It is ad-hoc signed, not notarised, and has no
 App Sandbox entitlement. The entitlements file in the source tree is not used by
 this build command. No UI, OCR or translation-service result was validated here.
+
+## Tests
+
+Run `bash tests/run.sh` on Apple silicon with Xcode installed. Five regressions
+exercise the actual translation service through an in-process URL protocol: rapid
+input, in-flight replacement, clearing, caller cancellation and blank input. All
+requests receive synthetic local responses; the tests do not contact Google.
+They do not validate translation quality or the complete UI/OCR flow.
+
+The service cancels superseded work; the view also checks an input revision before
+accepting a result.
 
 ## What is in this repository
 
@@ -97,7 +108,8 @@ They are still in the git history if you need them.
 ## Limitations
 
 - Apple silicon only — the build script targets `arm64-apple-macos13.0`.
-- No tests.
+- Tests cover translation scheduling and cancellation with local responses; full UI
+  and OCR behaviour remain unvalidated.
 - Not signed with a Developer ID and not notarised.
 - The current build does not enable App Sandbox.
 - Translation quality is whatever the endpoint returns; there is no glossary, no

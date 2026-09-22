@@ -2,6 +2,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 import NaturalLanguage
 
+@MainActor
 struct ContentView: View {
     @StateObject private var translationService = EnhancedTranslationService()
     @State private var sourceText = ""
@@ -10,6 +11,7 @@ struct ContentView: View {
     @State private var targetLanguage = LanguageManager.shared.languages[0]
     @State private var selectedImage: NSImage?
     @State private var isProcessingImage = false
+    @State private var translationRevision: UInt64 = 0
 
     var body: some View {
         VStack(spacing: 0) {
@@ -88,9 +90,7 @@ struct ContentView: View {
 
                 if selectedImage != nil {
                     Button(action: {
-                        selectedImage = nil
-                        sourceText = ""
-                        translatedText = ""
+                        clearInput()
                     }) {
                         HStack(spacing: 4) {
                             Image(systemName: "xmark.circle.fill")
@@ -107,8 +107,7 @@ struct ContentView: View {
                     .buttonStyle(.plain)
                 } else if !sourceText.isEmpty {
                     Button(action: {
-                        sourceText = ""
-                        translatedText = ""
+                        clearInput()
                     }) {
                         HStack(spacing: 4) {
                             Image(systemName: "trash.fill")
@@ -144,10 +143,7 @@ struct ContentView: View {
                 .scrollContentBackground(.hidden)
                 .background(Color(NSColor.textBackgroundColor))
                 .onChange(of: sourceText) { newValue in
-                    Task {
-                        // Automatically detect language and switch translation direction
-                        autoDetectAndTranslate(text: newValue)
-                    }
+                    autoDetectAndTranslate(text: newValue)
                 }
                 .onPasteCommand(of: [.image, .png, .jpeg, .tiff]) { providers in
                     handlePastedImage(providers: providers)
@@ -342,87 +338,90 @@ struct ContentView: View {
         return nil
     }
 
+    private func invalidateTranslation() {
+        translationRevision &+= 1
+        translationService.cancelTranslation()
+    }
+
+    private func clearInput() {
+        invalidateTranslation()
+        selectedImage = nil
+        isProcessingImage = false
+        sourceText = ""
+        translatedText = ""
+    }
+
     private func processImage(_ image: NSImage) {
+        invalidateTranslation()
+        let revision = translationRevision
         selectedImage = image
         isProcessingImage = true
         sourceText = ""
         translatedText = ""
 
         Task {
-            if let recognizedText = await translationService.recognizeText(from: image) {
+            guard revision == translationRevision else { return }
+            let recognizedText = await translationService.recognizeText(from: image)
+            guard revision == translationRevision else { return }
+            isProcessingImage = false
+            if let recognizedText {
                 sourceText = recognizedText
                 autoDetectAndTranslate(text: recognizedText)
             }
-            isProcessingImage = false
         }
     }
 
-    // Automatically detect language and translate
+    // Choose the same automatic direction, then accept only the newest result.
     private func autoDetectAndTranslate(text: String) {
+        invalidateTranslation()
+        let revision = translationRevision
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             translatedText = ""
             return
         }
 
+        var chineseCount = 0
+        var englishCount = 0
+        for char in text {
+            switch detectCharacterLanguage(char) {
+            case .chinese: chineseCount += 1
+            case .english: englishCount += 1
+            case .other: break
+            }
+        }
+        var fromLang = "auto"
+        var toLang = "zh-CN"
+        var detectedCode: String?
+        if chineseCount > englishCount {
+            fromLang = "zh-CN"
+            toLang = "en"
+        } else if englishCount > 0 {
+            fromLang = "en"
+        } else {
+            let recognizer = NLLanguageRecognizer()
+            recognizer.processString(text)
+            if let detected = recognizer.dominantLanguage {
+                if detected == .simplifiedChinese || detected == .traditionalChinese {
+                    fromLang = "zh-CN"
+                    toLang = "en"
+                } else {
+                    detectedCode = detected.rawValue
+                }
+            }
+        }
+        let displayCode = detectedCode ?? fromLang
+        if let language = LanguageManager.shared.languages.first(where: {
+            $0.code == displayCode || $0.code.hasPrefix(displayCode)
+        }) { sourceLanguage = language }
+        if let language = LanguageManager.shared.languages.first(where: { $0.code == toLang }) {
+            targetLanguage = language
+        }
+
         Task {
-            // Count the number of Chinese and English characters and determine the main language
-            var chineseCount = 0
-            var englishCount = 0
-
-            for char in text {
-                let charType = detectCharacterLanguage(char)
-                if charType == .chinese {
-                    chineseCount += 1
-                } else if charType == .english {
-                    englishCount += 1
-                }
-            }
-
-            // Determine the translation direction based on the main language
-            var fromLang = "auto"
-            var toLang = "zh-CN"
-
-            if chineseCount > englishCount {
-                // Mainly Chinese -> All translated into English
-                fromLang = "zh-CN"
-                toLang = "en"
-
-                await MainActor.run {
-                    if let zhLang = LanguageManager.shared.languages.first(where: { $0.code == "zh-CN" }) {
-                        sourceLanguage = zhLang
-                    }
-                    if let enLang = LanguageManager.shared.languages.first(where: { $0.code == "en" }) {
-                        targetLanguage = enLang
-                    }
-                }
-            } else if englishCount > 0 {
-                // Mainly in English -> All translated into Chinese
-                fromLang = "en"
-                toLang = "zh-CN"
-
-                await MainActor.run {
-                    if let enLang = LanguageManager.shared.languages.first(where: { $0.code == "en" }) {
-                        sourceLanguage = enLang
-                    }
-                    if let zhLang = LanguageManager.shared.languages.first(where: { $0.code == "zh-CN" }) {
-                        targetLanguage = zhLang
-                    }
-                }
-            } else {
-                // There is no obvious Chinese and English, use NLlanguageRecognizer to detect
-                translateSingleLanguage(text)
-                return
-            }
-
-            // Perform translation
-            if let result = await translationService.translateRealtime(
-                text: text,
-                from: fromLang,
-                to: toLang
-            ) {
-                await MainActor.run {
-                    translatedText = result
-                }
+            guard revision == translationRevision else { return }
+            if let result = await translationService.translateRealtime(text: text, from: fromLang, to: toLang),
+               revision == translationRevision, sourceText == text {
+                translatedText = result
             }
         }
     }
@@ -447,60 +446,6 @@ struct ContentView: View {
 
         // Numbers and punctuation
         return .other
-    }
-
-    // Single language translation (original logic)
-    private func translateSingleLanguage(_ text: String) {
-        let recognizer = NLLanguageRecognizer()
-        recognizer.processString(text)
-        let detectedLanguage = recognizer.dominantLanguage
-
-        Task {
-            var fromLang = "auto"
-            var toLang = "zh-CN"
-
-            if let detected = detectedLanguage {
-                if detected == .simplifiedChinese || detected == .traditionalChinese {
-                    // Chinese -> English
-                    fromLang = "zh-CN"
-                    toLang = "en"
-
-                    await MainActor.run {
-                        if let zhLang = LanguageManager.shared.languages.first(where: { $0.code == "zh-CN" }) {
-                            sourceLanguage = zhLang
-                        }
-                        if let enLang = LanguageManager.shared.languages.first(where: { $0.code == "en" }) {
-                            targetLanguage = enLang
-                        }
-                    }
-                } else {
-                    // Other languages -> Chinese
-                    toLang = "zh-CN"
-
-                    let langCode = detected.rawValue
-                    await MainActor.run {
-                        if let detectedLang = LanguageManager.shared.languages.first(where: {
-                            $0.code == langCode || $0.code.hasPrefix(langCode)
-                        }) {
-                            sourceLanguage = detectedLang
-                        }
-                        if let zhLang = LanguageManager.shared.languages.first(where: { $0.code == "zh-CN" }) {
-                            targetLanguage = zhLang
-                        }
-                    }
-                }
-            }
-
-            if let result = await translationService.translateRealtime(
-                text: text,
-                from: fromLang,
-                to: toLang
-            ) {
-                await MainActor.run {
-                    translatedText = result
-                }
-            }
-        }
     }
 }
 

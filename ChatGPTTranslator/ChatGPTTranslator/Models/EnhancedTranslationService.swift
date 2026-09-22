@@ -2,31 +2,56 @@ import Foundation
 import Vision
 import AppKit
 
+@MainActor
 class EnhancedTranslationService: ObservableObject {
     @Published var isTranslating = false
     @Published var errorMessage: String?
 
-    private var translationTask: Task<Void, Never>?
-    private let debounceDelay: TimeInterval = 0.8 // Translate after a delay of 0.8 seconds
+    private var translationTask: Task<String?, Never>?
+    private var requestVersion: UInt64 = 0
+    private let debounceDelay: TimeInterval
+    private let session: URLSession
+
+    init(session: URLSession = .shared, debounceDelay: TimeInterval = 0.8) {
+        self.session = session
+        self.debounceDelay = debounceDelay
+    }
+
+    func cancelTranslation() {
+        requestVersion &+= 1
+        translationTask?.cancel()
+        translationTask = nil
+        isTranslating = false
+        errorMessage = nil
+    }
 
     // Real-time translation - with debounce
     func translateRealtime(text: String, from sourceLanguage: String, to targetLanguage: String) async -> String? {
-        // Cancel previous translation task
-        translationTask?.cancel()
+        cancelTranslation()
 
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return nil
         }
 
-        // Waiting for debounce delay
-        try? await Task.sleep(nanoseconds: UInt64(debounceDelay * 1_000_000_000))
-
-        // Check if canceled
-        guard !Task.isCancelled else {
-            return nil
+        let version = requestVersion
+        let task = Task<String?, Never> {
+            do {
+                try await Task.sleep(nanoseconds: UInt64(debounceDelay * 1_000_000_000))
+            } catch { return nil }
+            guard !Task.isCancelled else { return nil }
+            return await translate(text: text, from: sourceLanguage, to: targetLanguage,
+                                   version: version)
         }
-
-        return await translate(text: text, from: sourceLanguage, to: targetLanguage)
+        translationTask = task
+        let result = await withTaskCancellationHandler(operation: {
+            await task.value
+        }, onCancel: {
+            task.cancel()
+        })
+        guard version == requestVersion else { return nil }
+        translationTask = nil
+        isTranslating = false
+        return Task.isCancelled ? nil : result
     }
 
     // Recognizing text from images
@@ -96,11 +121,11 @@ class EnhancedTranslationService: ObservableObject {
     }
 
     // Basic translation function
-    private func translate(text: String, from sourceLanguage: String, to targetLanguage: String) async -> String? {
-        await MainActor.run {
-            self.isTranslating = true
-            self.errorMessage = nil
-        }
+    private func translate(text: String, from sourceLanguage: String, to targetLanguage: String,
+                           version: UInt64) async -> String? {
+        guard version == requestVersion, !Task.isCancelled else { return nil }
+        isTranslating = true
+        errorMessage = nil
 
         let sourceLang = getLanguageCode(sourceLanguage)
         let targetLang = getLanguageCode(targetLanguage)
@@ -117,10 +142,8 @@ class EnhancedTranslationService: ObservableObject {
         ]
 
         guard let url = components.url else {
-            await MainActor.run {
-                self.isTranslating = false
-                self.errorMessage = "Invalid URL"
-            }
+            isTranslating = false
+            errorMessage = "Invalid URL"
             return nil
         }
 
@@ -130,7 +153,8 @@ class EnhancedTranslationService: ObservableObject {
         request.timeoutInterval = 10
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await session.data(for: request)
+            guard version == requestVersion, !Task.isCancelled else { return nil }
 
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw TranslationError.invalidResponse
@@ -155,19 +179,14 @@ class EnhancedTranslationService: ObservableObject {
                 }
             }
 
-            await MainActor.run {
-                self.isTranslating = false
-            }
+            isTranslating = false
 
             return translatedText.isEmpty ? nil : translatedText
 
         } catch {
-            await MainActor.run {
-                self.isTranslating = false
-                if !Task.isCancelled {
-                    self.errorMessage = "Translation failed: \(error.localizedDescription)"
-                }
-            }
+            guard version == requestVersion, !Task.isCancelled else { return nil }
+            isTranslating = false
+            errorMessage = "Translation failed: \(error.localizedDescription)"
             return nil
         }
     }
