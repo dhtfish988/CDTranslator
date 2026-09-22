@@ -2,7 +2,7 @@
 
 A small macOS translation app. Type and it translates as you go, picking the
 direction itself; paste a screenshot with `Cmd+V` and it reads the text out of the
-image first. SwiftUI, 806 lines of Swift, no configuration and no API key.
+image first. It uses a normal SwiftUI window and needs no API key.
 
 macOS 13+, Apple silicon.
 
@@ -14,8 +14,11 @@ macOS 13+, Apple silicon.
 - **Read text out of images.** `Cmd+V` with a screenshot or picture on the clipboard
   runs OCR on it and translates the result. Recognition uses Apple's **Vision**
   framework, so that step happens on your Mac and the image is never uploaded.
-- **13 languages** — Chinese (Simplified), English, Japanese, Korean, French,
-  German, Spanish, Italian, Portuguese, Russian, Arabic, Thai, Vietnamese.
+- **Automatic direction.** The main path sends mostly Chinese text to English and
+  Latin-letter text to Simplified Chinese; other input falls back to language
+  detection and generally translates to Chinese. These heuristics can misclassify
+  languages. The menus list 13 languages, but their selections are not wired into
+  the main translation path, so arbitrary language-pair selection is not supported.
 - **One-click copy** of the result.
 
 ## How translation works, and the caveat that comes with it
@@ -58,19 +61,21 @@ swiftc -target arm64-apple-macos13.0 \
   ChatGPTTranslator/ChatGPTTranslator/Models/Language.swift
 ```
 
-**Build check.** The four files above compile to an arm64 Mach-O with the macOS 27.0
-SDK (Xcode 26), targeting macOS 13.0. Four warnings remain, all in
+**Build check (2026-09-22, source commit `2b22434`).** The four files above compiled
+to an arm64 Mach-O on macOS 26.7 with Xcode 27.0 and the macOS 27.0 SDK, targeting
+macOS 13.0. Four warnings remain, all in
 `EnhancedTranslationService.swift` and all from Swift concurrency checking against
 `Vision`, which predates `Sendable`: `VNImageRequestHandler`, `VNRecognizeTextRequest`
 and `self` are each captured in a `@Sendable` closure, and the compiler suggests
-`@preconcurrency import Vision` to silence the set. The build produces a working
-binary; it has not been notarised, and it is signed ad-hoc by the linker, so
-Gatekeeper will treat it as unidentified on another machine.
+`@preconcurrency import Vision` to silence the set. This was a compile-only check;
+the binary was not installed or run. It is ad-hoc signed, not notarised, and has no
+App Sandbox entitlement. The entitlements file in the source tree is not used by
+this build command. No UI, OCR or translation-service result was validated here.
 
 ## What is in this repository
 
-The four files listed above are the app. The rest is earlier work kept because it
-still builds, and it is worth knowing which is which before reading the source:
+The four files listed above form the current build. Earlier files are retained for
+reference; this build check does not validate those variants:
 
 | | |
 |---|---|
@@ -94,6 +99,7 @@ They are still in the git history if you need them.
 - Apple silicon only — the build script targets `arm64-apple-macos13.0`.
 - No tests.
 - Not signed with a Developer ID and not notarised.
+- The current build does not enable App Sandbox.
 - Translation quality is whatever the endpoint returns; there is no glossary, no
   context window and no way to correct a result.
 - OCR accuracy is Vision's, which is good on screenshots and poorer on photographs

@@ -1,34 +1,19 @@
-[Application name]
-CDTranslator
+CDTranslator — draft listing copy
 
-[Subtitle]
-Intelligent translation, image and text recognition
+This is source-repository copy, not evidence of an App Store release or approval.
 
-[Application Description - English]
-CDTranslator is a simple and efficient macOS translation tool that supports real-time translation and image text recognition functions.
+CDTranslator is a macOS window app for translating text as you type. Press Cmd+V
+with an image on the clipboard to recognize its text using Apple Vision, then
+translate the recognized text online.
 
-Main functions:
-• Real-time translation - Translate as you type, no need to wait
-• Image and text recognition - supports text extraction and translation from images
-• Multi-language support - supports 13 languages including Chinese, English, Japanese, Korean, French, and German
-• Intelligent detection - automatically recognize the input language and intelligently switch the translation direction
-• Clipboard monitoring - automatically recognize text after copying pictures
-• Quick operation - supports Cmd+V to quickly paste pictures for recognition
+The current translation path chooses its own direction: mainly Chinese to English
+and Latin-letter input to Simplified Chinese, with language detection for other
+input. The language menus do not currently provide arbitrary language-pair control.
 
-Feature Highlights:
-• Simple interface and intuitive operation
-• Fast response and accurate translation
-• Local text recognition to protect privacy
-• Native macOS application, smooth experience
+OCR runs locally. Text, including OCR results, is sent to Google for translation.
+The current build has no background clipboard monitoring and does not enable App
+Sandbox. Translation uses an undocumented endpoint and may become unavailable.
 
-Whether it is daily translation, learning foreign languages or processing multi-language documents, CDTranslator is your right-hand assistant.
-
-[Keywords] (within 100 characters, separated by commas)
-translation, translate, OCR, text recognition, multi-language, Chinese-English translation, Japanese translation, real-time translation, picture translation, screenshot translation
-
-[Version update instructions]
-first release
-- Supports translation between 13 languages
-- Real-time translation function
-- Image text recognition
-- Clipboard monitoring
+Requirements: Apple silicon, macOS 13 or later, internet access for translation.
+Build and validation limits: https://github.com/dhtfish988/CDTranslator
+Privacy policy: https://dhtfish988.github.io/CDTranslator/
